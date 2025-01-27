@@ -1,0 +1,218 @@
+/* copied and edited from https://www.geeksforgeeks.org/build-a-drag-drop-kanban-board-using-html-css-javascript/ */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #e4e4e4;
+    margin: 0;
+    padding: 0;
+}
+
+.head {
+    background-color: #ffcad4;
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.head img {
+    width: 150px;
+}
+
+.head h1 {
+    font-size: 28px;
+    margin: 0;
+    position: relative;
+    left: -10px;
+}
+
+.head div {
+    min-width: 100%;
+    position: relative;
+    top: -10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+#num-of-groups {
+    margin: 0 20px;
+    width: 2em;
+}
+
+#parts {
+    margin: 0 20px;
+    width: 10em;
+}
+
+#data-file {
+    width: 400px;
+}
+
+#upload {
+    width: 200px;
+    margin: 10px 30% 0;
+}
+
+#board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-width: 400px;
+    margin: 2px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 5px 10px;
+    box-shadow:
+        0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.group h2 {
+    font-size: 14px;
+    margin: 4px 0 0 0;
+    color: #333;
+}
+
+.group hr {
+    width: 100%;
+}
+
+.task-input {
+    width: 60%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.task {
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: grab;
+}
+
+.delete-btn {
+    float: right;
+    cursor: pointer;
+}
+
+.add-task-btn {
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    /* Adjust padding to make 
+    the button smaller */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    /* Decrease font size */
+    border-radius: 5px;
+    /* Adjust border radius 
+    for a softer look */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+.add-task-btn:hover {
+    background-color: #45a049;
+}
+
+
+#todo .task {
+    background-color: #b3e5fc;
+    /* Light blue */
+}
+
+#in-progress .task {
+    background-color: #ffcdd2;
+    /* Light pink */
+}
+
+#done .task {
+    background-color: #c8e6c9;
+    /* Light green */
+}
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    cursor: grab;
+}
+
+.delete-btn {
+    float: right;
+
+    cursor: pointer;
+}
+
+.tasks-in-btn {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 3px;
+
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    height: 2em;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    white-space: wrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+}
+
+.regular-available {
+    background-color: #008080;
+    color: #ffffff;
+}
+
+.guitar-available {
+    background-color: #73628a;
+    color: #ffffff;
+}
+
+tbody tr {
+    cursor: grab;
+}
+
+tbody tr:hover {
+    background-color: #999999;
+}
+
+.dragged {
+    background-color: #999999;
+}
+
+.dragged-border {
+    border: 2px solid rgb(147 197 253);
+    border-width: 2px 0 0 0;
+}
+
+.dragged-border-bottom {
+    border: 2px solid rgb(147 197 253);
+    border-width: 0 0 2px 0;
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content=
+"width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Groups Divisor</title>
+    <link rel="shortcut icon" href="logo_val.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href=
+"https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+</head>
+
+<body>
+    <!-- copied and edited from https://www.geeksforgeeks.org/build-a-drag-drop-kanban-board-using-html-css-javascript/ -->
+    <div class="head">
+        <img src="logo_val.png">
+        <h1>Valentine's Day Groups Divisor</h1>
+        <div>
+            Number of groups: <input type="number" name="num-of-groups" id="num-of-groups" min="1" step="1" value="4">
+            Comma-separated part list: <input type="text" name="parts" id="parts" value="Alto,Soprano,TenorBass">
+            <input type="file" id="data-file" name="data-file" accept=".csv">
+            <input type="submit" id="upload" value="Upload" onclick="initUpdate()">
+        </div>
+    </div>
+    <div id="board">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
