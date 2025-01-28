@@ -4,134 +4,148 @@ var data = new Array();
 var parts = ["Alto","Soprano","Boys"]
 var numOfGroups = 3;
 var dragSrcEl = null;
-var isChanged = null;
-var check = 0;
 var displayDiv = document.createElement("div");
 displayDiv.style = "width: 100%;";
+var resultsDiv = document.createElement("div");
+resultsDiv.style = "display: flex;width: 100%;margin-top: 30px;align-items: center;justify-content: center;flex-wrap: wrap;";
 
 function initUpdate() {
     data = new Array();
     parts = document.getElementById("parts").value.split(",");
+    for (let i = 0; i < parts.length; i++) {
+        parts[i] = parts[i].trim();
+    }
     numOfGroups = document.getElementById("num-of-groups").value;
     const board = document.getElementById("board");
     board.innerHTML = '';
     displayDiv.innerHTML = '';
 
-    for (let i = 0; i < parts.length; i++) {
-        for (let j = 1; j <= numOfGroups; j++) {
-            const group = document.createElement("div");
-            group.id = `group-${parts[i]}-${j}`;
-            group.className = "group";
-            group.innerHTML =
-                `<h2>Group ${parts[i]} ${j}</h2>
-                <hr>
-                <table class="table-summary"></table>`;
-            group.style = "display: none;";
-            if (i == 0) group.style = "display: block;";
-            board.appendChild(group);
-            for (let z = 1; z <= numOfGroups; z++) {
-                if (z != j) {
-                    var btn = document.createElement("input");
-                    btn.type = "submit"
-                    btn.value = `Swap with Group ${z} ${parts[i]}`;
-                    btn.style = "margin-left: 10px";
-                    btn.addEventListener("click", function(e) {
-                        var group1 = document.querySelectorAll(`#group-${parts[i]}-${j} tbody tr`);
-                        var group2 = document.querySelectorAll(`#group-${parts[i]}-${z} tbody tr`);
-                        for (let row = 0; row < group1.length; row++) {
-                            data[parseInt(group1[row].id.split("-")[1])+1][2] = z.toString();
-                            document.querySelector(`#group-${parts[i]}-${z} tbody`).appendChild(group1[row]);
-                        }
-                        for (let row = 0; row < group2.length; row++) {
-                            data[parseInt(group2[row].id.split("-")[1])+1][2] = j.toString();
-                            document.querySelector(`#group-${parts[i]}-${j} tbody`).appendChild(group2[row]);
-                        }
-                        updateColCount(`group-${parts[i]}-${j}`);
-                        updateColCount(`group-${parts[i]}-${z}`);
-                    })
-                    group.querySelector(`hr`).insertAdjacentElement("beforebegin", btn);
-                }
-            }
-        }
-        var displayBtn = document.createElement("input");
-        displayBtn.type = "submit"
-        displayBtn.value = `Show ${parts[i]}`;
-        if (i == 0) displayBtn.value = `Hide ${parts[i]}`;
-        displayBtn.style = "margin-left: 10px; margin-top: 5px;";
-        displayBtn.addEventListener("click", function(e) {
-            var displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
-            for (let y = 0; y < parts.length; y++) {
-                for (let z = 1; z <= numOfGroups; z++) {
-                    document.getElementById(`group-${parts[y]}-${z}`).style = y == i ? "display: block;" : "display: none;";
-                }
-                displayBtns[y].value = `${y == i ? "Hide" : "Show"} ${parts[y]}`;
-            }
-        })
-        displayDiv.appendChild(displayBtn);
-        document.querySelector(".head").appendChild(displayDiv);
-    }
-
     // https://makitweb.com/how-to-read-csv-file-and-display-its-content-using-javascript/
     const files = document.querySelector('#data-file').files;
     if(files.length > 0 ){
-        // Selected file
-        const file = files[0];
-        // FileReader Object
-        var reader = new FileReader();
-        // Load event
-        reader.onload = function(event) {
-            // Read file data
-            let i = 0;
-            isChanged = event.target.result.startsWith("Timestamp") ? false : true;
-            event.target.result.split('\n').forEach(row => {
-                if (row.includes(",")) {
-                    data.push(new Array());
-                    let j = 0;
-                    row.split(',').forEach(cell => {
-                        if (j == 1) {
-                            if (i == 0) {
-                                data[data.length-1].push("Name");
-                            } else {
-                                data[data.length-1].push(cell.trim().split("@")[0].split(".")
-                                    .map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(" "));
+        for (let i = 0; i < parts.length; i++) {
+            for (let j = 1; j <= numOfGroups; j++) {
+                const group = document.createElement("div");
+                group.id = `group-${parts[i]}-${j}`;
+                group.className = "group";
+                group.innerHTML =
+                    `<h2>Group ${parts[i]} ${j}</h2>
+                    <hr>
+                    <table class="table-summary"></table>`;
+                group.style = "display: none;";
+                if (i == 0) group.style = "display: block;";
+                board.appendChild(group);
+                for (let z = 1; z <= numOfGroups; z++) {
+                    if (z != j) {
+                        var btn = document.createElement("input");
+                        btn.type = "submit"
+                        btn.value = `Swap with Group ${z} ${parts[i]}`;
+                        btn.style = "margin-left: 10px";
+                        btn.addEventListener("click", function(e) {
+                            var group1 = document.querySelectorAll(`#group-${parts[i]}-${j} tbody tr`);
+                            var group2 = document.querySelectorAll(`#group-${parts[i]}-${z} tbody tr`);
+                            for (let row = 0; row < group1.length; row++) {
+                                data[parseInt(group1[row].id.split("-")[1])+1][2] = z.toString();
+                                document.querySelector(`#group-${parts[i]}-${z} tbody`).appendChild(group1[row]);
                             }
-                        } else if (j == 3) {
-                            if (i == 0) {
-                                data[data.length-1].push("Part");
-                                data[data.length-1].push("Group");
-                            } else {
-                                data[data.length-1].push(cell.trim());
-                                if (isChanged) {
-                                    data[data.length-1].push(cell.trim());
+                            for (let row = 0; row < group2.length; row++) {
+                                data[parseInt(group2[row].id.split("-")[1])+1][2] = j.toString();
+                                document.querySelector(`#group-${parts[i]}-${j} tbody`).appendChild(group2[row]);
+                            }
+                            updateColCount(`group-${parts[i]}-${j}`);
+                            updateColCount(`group-${parts[i]}-${z}`);
+                        })
+                        group.querySelector(`hr`).insertAdjacentElement("beforebegin", btn);
+                    }
+                }
+            }
+            var displayBtn = document.createElement("input");
+            displayBtn.type = "submit"
+            displayBtn.value = `Show ${parts[i]}`;
+            if (i == 0) displayBtn.value = `Showing ${parts[i]}`;
+            displayBtn.style = `${i == 0 ? "" : "margin-left: 10px;"}margin-top: 5px;`;
+            displayBtn.addEventListener("click", function(e) {
+                var displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
+                for (let y = 0; y < parts.length; y++) {
+                    for (let z = 1; z <= numOfGroups; z++) {
+                        document.getElementById(`group-${parts[y]}-${z}`).style = y == i ? "display: block;" : "display: none;";
+                    }
+                    displayBtns[y].value = `${y == i ? "Showing" : "Show"} ${parts[y]}`;
+                }
+            })
+            displayDiv.appendChild(displayBtn);
+            document.querySelector(".head").appendChild(displayDiv);
+        }
+        var saveBtn = document.createElement("input");
+        saveBtn.type = "submit"
+        saveBtn.value = "Save to a CSV";
+        saveBtn.style = "display: inline;margin-top: 5px;";
+        saveBtn.addEventListener("click", saveToFile)
+        resultsDiv.appendChild(saveBtn);
+        var displayResultsBtn = document.createElement("input");
+        displayResultsBtn.type = "submit"
+        displayResultsBtn.value = "Display results";
+        displayResultsBtn.style = "display: inline;margin-top: 5px;margin-left: 10px;";
+        displayResultsBtn.addEventListener("click", displayResult)
+        resultsDiv.appendChild(displayResultsBtn);
+        var childResultsDiv = document.createElement("div");
+        childResultsDiv.id = "results";
+        childResultsDiv.style = "width: 100%;text-align: center;margin-top: 30px;";
+        resultsDiv.appendChild(childResultsDiv);
+        board.appendChild(resultsDiv);
+        const file = files[0];
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            let i = 0;
+            if (!event.target.result.startsWith("Timestamp")) {
+                data = event.target.result.split("\n").map(row => row.split(","));
+            } else {
+                event.target.result.split('\n').forEach(row => {
+                    if (row.includes(",")) {
+                        data.push(new Array());
+                        let j = 0;
+                        row.split(',').forEach(cell => {
+                            if (j == 1) {
+                                if (i == 0) {
+                                    data[data.length-1].push("Name");
                                 } else {
+                                    data[data.length-1].push(cell.trim().split("@")[0].split(".")
+                                        .map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(" "));
+                                }
+                            } else if (j == 3) {
+                                if (i == 0) {
+                                    data[data.length-1].push("Part");
+                                    data[data.length-1].push("Group");
+                                } else {
+                                    data[data.length-1].push(cell.trim());
                                     data[data.length-1].push(null);
                                 }
+                            } else if (j == 4) {
+                                if (i == 0) {
+                                    data[data.length-1].push("Guitar");
+                                } else if (cell.trim() == "Yes") {
+                                    data[data.length-1].push(1);
+                                } else if (cell.trim() == "No") {
+                                    data[data.length-1].push(0);
+                                } else {
+                                    data[data.length-1].push(cell.trim());
+                                }
+                            } else if (j > 4) {
+                                if (cell.trim() == "Yes") {
+                                    data[data.length-1].push(1);
+                                } else if (cell.trim() == "No") {
+                                    data[data.length-1].push(0);
+                                } else {
+                                    data[data.length-1].push(cell.trim());
+                                }
                             }
-                        } else if (j == 4) {
-                            if (i == 0) {
-                                data[data.length-1].push("Guitar");
-                            } else if (cell.trim() == "Yes") {
-                                data[data.length-1].push(1);
-                            } else if (cell.trim() == "No") {
-                                data[data.length-1].push(0);
-                            } else {
-                                data[data.length-1].push(cell.trim());
-                            }
-                        } else if (j > 4) {
-                            if (cell.trim() == "Yes") {
-                                data[data.length-1].push(1);
-                            } else if (cell.trim() == "No") {
-                                data[data.length-1].push(0);
-                            } else {
-                                data[data.length-1].push(cell.trim());
-                            }
-                        }
-                        j++;
-                    });
-                    i++;
-                }
-            });
-            if (!isChanged) improvise();
+                            j++;
+                        });
+                        i++;
+                    }
+                });
+                improvise();
+            }
             for (let i = 0; i < data.length; i++) {
                 if (i == 0) {
                     for (let y = 0; y < parts.length; y++) {
@@ -193,6 +207,7 @@ function initUpdate() {
                                     document.querySelectorAll('.dragged-border-bottom').forEach(function (el) {
                                         el.classList.remove('dragged-border-bottom');
                                     });
+                                    updateGuitarStyle();
                                 });
                             }
                             document.getElementById(`group-${parts[y]}-${z}`).querySelector("table").createTBody();
@@ -207,6 +222,7 @@ function initUpdate() {
                 updateColCount(`group-${parts[y]}-${z}`);
             }
         }
+        updateGuitarStyle();
         };
         reader.readAsText(file);
     } else {
@@ -252,6 +268,7 @@ function updateTable(i) {
             updateColCount(srcParentId);
             updateColCount(trgParentId);
         }
+        updateGuitarStyle();
         document.querySelectorAll('.dragged-border').forEach(function (el) {
             el.classList.remove('dragged-border');
         });
@@ -274,32 +291,28 @@ function updateTable(i) {
     }
 }
 
-function updateGuitarStyle(id) {
-    for (let i = 0; i < parts.length; i++) {
-        let tempId = id.split("-");
-        tempId[1] = parts[i];
-        tempId = tempId.join("-");
-        let row = document.getElementById(tempId).querySelectorAll("table thead tr .col-count.guitar-available");
-        row.forEach(r => {r.classList.remove("guitar-available")});
-    }
-    let sums = Array(data[0].length-4).fill(0);
-    document.getElementById(id).querySelectorAll("table tr").forEach(row => {
-        let elements = row.querySelectorAll("td");
-        if (elements) {
-            let j = 2;
-            elements.forEach(element => {
-                if ((element.innerHTML != "0") && (elements[1].innerHTML == "1")) sums[j-2]++;
-                j++;
-            })
+function updateGuitarStyle() {
+    let row = document.querySelectorAll(".col-count.guitar-available");
+    row.forEach(r => {r.classList.remove("guitar-available")});
+    for (let i = 1; i <= numOfGroups; i++) {
+        let sums = Array(data[0].length-4).fill(0);
+        for (let j = 0; j < parts.length; j++) {
+            document.getElementById(`group-${parts[j]}-${i}`).querySelectorAll("table tr").forEach(row => {
+                let elements = row.querySelectorAll("td");
+                if (elements) {
+                    for (let z = 2; z < elements.length; z++) {
+                        if ((elements[z].innerHTML != "0") && (elements[1].innerHTML == "1")) sums[z-2]++;
+                    }
+                }
+            });
         }
-    });
-    for (let i = 0; i < parts.length; i++) {
-        let tempId = id.split("-");
-        tempId[1] = parts[i];
-        tempId = tempId.join("-");
-        let row = document.getElementById(tempId).querySelectorAll("table thead tr .col-count");
-        for (let col = 2; col < data[0].length-2; col++) {
-            if (sums[col] > 0) row[col].classList.add("guitar-available");
+        for (let j = 0; j < parts.length; j++) {
+            let row = document.getElementById(`group-${parts[j]}-${i}`).querySelectorAll("th.col-count");
+            for (let col = 2; col < row.length; col++) {
+                if (sums[col-2] > 0) {
+                    row[col].classList.add("guitar-available");
+                }
+            }
         }
     }
 }
@@ -320,7 +333,6 @@ function updateColCount(id) {
     for (let col = 0; col < data[0].length-2; col++) {
         row[col].innerHTML = sums[col];
     }
-    updateGuitarStyle(id);
 }
 
 function sortRowsByTimeAvailable(array) {
@@ -410,8 +422,8 @@ function improvise() {
         while (partUnallocatedView.length != 0){
             data.forEach(row => {
                 if (row[0] == partUnallocatedView[0][0]) {
-                    row[2] = j;
-                    // row[2] = bestScoringPotential(row);
+                    row[2] = j.toString();
+                    //TODO this is for improving initial division logic row[2] = bestScoringPotential(row);
                 }
             });
             j++;
@@ -420,4 +432,51 @@ function improvise() {
             partUnallocatedView = partUnallocatedView.filter(row => row[2] == null);
         }
     }
+}
+
+function saveToFile() {
+    var csvContent = data.map(row => row.join(",")).join("\n");
+
+    // Create a Blob from the CSV string
+    var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+
+    // Create a URL for the Blob
+    var url = URL.createObjectURL(blob);
+
+    // Create a detached <a> element and trigger the download
+    var link = document.createElement("a");
+    link.href = url;
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    var day = String(now.getDate()).padStart(2, "0");
+    var hours = String(now.getHours()).padStart(2, "0");
+    var minutes = String(now.getMinutes()).padStart(2, "0");
+
+    // Format the filename
+    link.download = `valentines-availability-division-${year}-${month}-${day}-${hours}-${minutes}.csv`;
+    link.click();
+
+    // Revoke the URL to free up memory
+    URL.revokeObjectURL(url);
+}
+
+function displayResult() {
+    var childResultsDiv = document.getElementById("results");
+    array =  data.slice(1).sort((a, b) => {
+        if (a[2] !== b[2]) {
+            return (a[2] || "").localeCompare(b[2] || "");
+        }
+        return a[0].localeCompare(b[0]);
+    });
+    var currentGroup = 1;
+    var results = "<span class='group-title'>Group 1</span><br>";
+    for (let i = 0; i < array.length; i++) {
+        if (array[i][2] != currentGroup.toString()) {
+            currentGroup++;
+            results += `<br><span class='group-title'>Group ${currentGroup}</span><br>`;
+        }
+        results += `${array[i][0]}<br>`;
+    }
+    childResultsDiv.innerHTML = results;
 }
