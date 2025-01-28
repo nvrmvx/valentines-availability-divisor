@@ -8,6 +8,22 @@ var displayDiv = document.createElement("div");
 displayDiv.style = "width: 100%;";
 var resultsDiv = document.createElement("div");
 resultsDiv.style = "display: flex;width: 100%;margin-top: 30px;align-items: center;justify-content: center;flex-wrap: wrap;";
+var saveBtn = document.createElement("input");
+saveBtn.type = "submit"
+saveBtn.value = "Save to a CSV";
+saveBtn.style = "display: inline;margin-top: 5px;";
+saveBtn.addEventListener("click", saveToFile)
+resultsDiv.appendChild(saveBtn);
+var displayResultsBtn = document.createElement("input");
+displayResultsBtn.type = "submit"
+displayResultsBtn.value = "Display results";
+displayResultsBtn.style = "display: inline;margin-top: 5px;margin-left: 10px;";
+displayResultsBtn.addEventListener("click", displayResult)
+resultsDiv.appendChild(displayResultsBtn);
+var childResultsDiv = document.createElement("div");
+childResultsDiv.id = "results";
+childResultsDiv.style = "width: 100%;text-align: center;margin-top: 30px;";
+resultsDiv.appendChild(childResultsDiv);
 
 function initUpdate() {
     data = new Array();
@@ -76,22 +92,6 @@ function initUpdate() {
             displayDiv.appendChild(displayBtn);
             document.querySelector(".head").appendChild(displayDiv);
         }
-        var saveBtn = document.createElement("input");
-        saveBtn.type = "submit"
-        saveBtn.value = "Save to a CSV";
-        saveBtn.style = "display: inline;margin-top: 5px;";
-        saveBtn.addEventListener("click", saveToFile)
-        resultsDiv.appendChild(saveBtn);
-        var displayResultsBtn = document.createElement("input");
-        displayResultsBtn.type = "submit"
-        displayResultsBtn.value = "Display results";
-        displayResultsBtn.style = "display: inline;margin-top: 5px;margin-left: 10px;";
-        displayResultsBtn.addEventListener("click", displayResult)
-        resultsDiv.appendChild(displayResultsBtn);
-        var childResultsDiv = document.createElement("div");
-        childResultsDiv.id = "results";
-        childResultsDiv.style = "width: 100%;text-align: center;margin-top: 30px;";
-        resultsDiv.appendChild(childResultsDiv);
         board.appendChild(resultsDiv);
         const file = files[0];
         var reader = new FileReader();
@@ -182,7 +182,7 @@ function initUpdate() {
                                 });
                                 newRow.addEventListener('dragleave', function (e) {
                                     x == 0 ? this.nextSibling.classList.add("dragged-border-bottom") :
-                                        this.classList.add("dragged-border-bottom");
+                                        this.classList.remove("dragged-border-bottom");
                                 });
                                 newRow.addEventListener("drop", function(e) {
                                     e.preventDefault();
@@ -244,6 +244,12 @@ function updateTable(i) {
         this.classList.remove('dragged');
         document.querySelectorAll('.dragged').forEach(function (el) {
             el.classList.remove('dragged');
+        });
+        document.querySelectorAll('.dragged-border').forEach(function (el) {
+            el.classList.remove('dragged-border');
+        });
+        document.querySelectorAll('.dragged-border-bottom').forEach(function (el) {
+            el.classList.remove('dragged-border-bottom');
         });
     });
     newRow.addEventListener('dragover', function (e) {
@@ -436,14 +442,8 @@ function improvise() {
 
 function saveToFile() {
     var csvContent = data.map(row => row.join(",")).join("\n");
-
-    // Create a Blob from the CSV string
     var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-
-    // Create a URL for the Blob
     var url = URL.createObjectURL(blob);
-
-    // Create a detached <a> element and trigger the download
     var link = document.createElement("a");
     link.href = url;
     var now = new Date();
@@ -452,17 +452,13 @@ function saveToFile() {
     var day = String(now.getDate()).padStart(2, "0");
     var hours = String(now.getHours()).padStart(2, "0");
     var minutes = String(now.getMinutes()).padStart(2, "0");
-
-    // Format the filename
     link.download = `valentines-availability-division-${year}-${month}-${day}-${hours}-${minutes}.csv`;
     link.click();
-
-    // Revoke the URL to free up memory
     URL.revokeObjectURL(url);
 }
 
 function displayResult() {
-    var childResultsDiv = document.getElementById("results");
+    var resDiv = document.getElementById("results");
     array =  data.slice(1).sort((a, b) => {
         if (a[2] !== b[2]) {
             return (a[2] || "").localeCompare(b[2] || "");
@@ -478,5 +474,5 @@ function displayResult() {
         }
         results += `${array[i][0]}<br>`;
     }
-    childResultsDiv.innerHTML = results;
+    resDiv.innerHTML = results;
 }
