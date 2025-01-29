@@ -4,10 +4,12 @@ var data = new Array();
 var parts = ["Alto","Soprano","Boys"]
 var numOfGroups = 3;
 var dragSrcEl = null;
+
 var displayDiv = document.createElement("div");
 displayDiv.style = "width: 100%;";
+
 var resultsDiv = document.createElement("div");
-resultsDiv.style = "display: flex;width: 100%;margin-top: 30px;align-items: center;justify-content: center;flex-wrap: wrap;";
+resultsDiv.style = "display: flex;width: 100%;margin: 30px 0;align-items: center;justify-content: center;flex-wrap: wrap;";
 var saveBtn = document.createElement("input");
 saveBtn.type = "submit"
 saveBtn.value = "Save to a CSV";
@@ -53,13 +55,13 @@ function initUpdate() {
                 board.appendChild(group);
                 for (let z = 1; z <= numOfGroups; z++) {
                     if (z != j) {
-                        var btn = document.createElement("input");
+                        let btn = document.createElement("input");
                         btn.type = "submit"
                         btn.value = `Swap with Group ${z} ${parts[i]}`;
                         btn.style = "margin-left: 10px";
                         btn.addEventListener("click", function(e) {
-                            var group1 = document.querySelectorAll(`#group-${parts[i]}-${j} tbody tr`);
-                            var group2 = document.querySelectorAll(`#group-${parts[i]}-${z} tbody tr`);
+                            let group1 = document.querySelectorAll(`#group-${parts[i]}-${j} tbody tr`);
+                            let group2 = document.querySelectorAll(`#group-${parts[i]}-${z} tbody tr`);
                             for (let row = 0; row < group1.length; row++) {
                                 data[parseInt(group1[row].id.split("-")[1])+1][2] = z.toString();
                                 document.querySelector(`#group-${parts[i]}-${z} tbody`).appendChild(group1[row]);
@@ -70,18 +72,19 @@ function initUpdate() {
                             }
                             updateColCount(`group-${parts[i]}-${j}`);
                             updateColCount(`group-${parts[i]}-${z}`);
+                            updateGuitarStyle();
                         })
                         group.querySelector(`hr`).insertAdjacentElement("beforebegin", btn);
                     }
                 }
             }
-            var displayBtn = document.createElement("input");
+            let displayBtn = document.createElement("input");
             displayBtn.type = "submit"
             displayBtn.value = `Show ${parts[i]}`;
             if (i == 0) displayBtn.value = `Showing ${parts[i]}`;
             displayBtn.style = `${i == 0 ? "" : "margin-left: 10px;"}margin-top: 5px;`;
             displayBtn.addEventListener("click", function(e) {
-                var displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
+                let displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
                 for (let y = 0; y < parts.length; y++) {
                     for (let z = 1; z <= numOfGroups; z++) {
                         document.getElementById(`group-${parts[y]}-${z}`).style = y == i ? "display: block;" : "display: none;";
@@ -92,9 +95,8 @@ function initUpdate() {
             displayDiv.appendChild(displayBtn);
             document.querySelector(".head").appendChild(displayDiv);
         }
-        board.appendChild(resultsDiv);
         const file = files[0];
-        var reader = new FileReader();
+        let reader = new FileReader();
         reader.onload = function(event) {
             let i = 0;
             if (!event.target.result.startsWith("Timestamp")) {
@@ -150,25 +152,16 @@ function initUpdate() {
                 if (i == 0) {
                     for (let y = 0; y < parts.length; y++) {
                         for (let z = 1; z <= numOfGroups; z++) {
-                            var newTHead = document.getElementById(`group-${parts[y]}-${z}`).querySelector("table").createTHead();
+                            let newTHead = document.getElementById(`group-${parts[y]}-${z}`).querySelector("table").createTHead();
                             for (let x = 0; x < 2; x++) {
-                                var newRow = newTHead.insertRow();
+                                let newRow = newTHead.insertRow();
                                 for (let col = 2; col < data[i].length; col++) {
+                                    let newCell = newRow.insertCell();
                                     if (x == 0) {
-                                        if (col == 2) {
-                                            var newCell = newRow.insertCell();
-                                            newCell.outerHTML = `<th class="col-name" style="width:10em;">Name</th>`;
-                                        } else if (col == 3) {
-                                            newCell = newRow.insertCell();
-                                            newCell.outerHTML = `<th class="col-name">Guitar</th>`;
-                                        } else if (col > 3) {
-                                            var newCell = newRow.insertCell();
-                                            newCell.outerHTML = `<th class="col-name">${data[i][col]}</th>`;
-                                        }
-                                    } else {
-                                        var newCell = newRow.insertCell();
-                                        newCell.outerHTML = `<th class="col-count">0</th>`;
-                                    }
+                                        if (col == 2) newCell.outerHTML = `<th class="col-name" style="width: 16em;">Name</th>`;
+                                        else if (col == 3) newCell.outerHTML = `<th class="col-name">Guitar</th>`;
+                                        else if (col > 3) newCell.outerHTML = `<th class="col-name">${data[i][col]}</th>`;
+                                    } else newCell.outerHTML = `<th class="col-count">0</th>`;
                                 }
                                 newRow.addEventListener('dragover', function (e) {
                                     e.preventDefault();
@@ -199,6 +192,7 @@ function initUpdate() {
                                         data[parseInt(dragSrcEl.id.split("-")[1])+1][2] = trgParentId.split("-")[2];
                                         updateColCount(srcParentId);
                                         updateColCount(trgParentId);
+                                        updateGuitarStyle();
                                     }
                                     // Remove the border classes from all table rows
                                     document.querySelectorAll('.dragged-border').forEach(function (el) {
@@ -207,7 +201,6 @@ function initUpdate() {
                                     document.querySelectorAll('.dragged-border-bottom').forEach(function (el) {
                                         el.classList.remove('dragged-border-bottom');
                                     });
-                                    updateGuitarStyle();
                                 });
                             }
                             document.getElementById(`group-${parts[y]}-${z}`).querySelector("table").createTBody();
@@ -222,6 +215,32 @@ function initUpdate() {
                 updateColCount(`group-${parts[y]}-${z}`);
             }
         }
+        let summary = document.createElement("div");
+        summary.id = "summary";
+        summary.className = "group";
+        summary.innerHTML = "<h2>Summary</h2><hr>";
+        let summaryTable = document.createElement("table");
+        summaryTable.classList.add("table-summary");
+        let summaryTHead = summaryTable.createTHead();
+        let sumRow = summaryTHead.insertRow();
+        for (let col = 2; col < data[0].length; col++) {
+            let newCell = sumRow.insertCell();
+            if (col == 2) newCell.outerHTML = `<th class="col-name"">Group</th>`;
+            else if (col == 3) newCell.outerHTML = `<th class="col-name">Total ${parts.join("/")}/Guitar</th>`;
+            else if (col > 3) newCell.outerHTML = `<th class="col-name">${data[0][col]}</th>`;
+        }
+        let summaryTBody = summaryTable.createTBody();
+        for (let i = 1; i <= numOfGroups; i++) {
+            let newRow = summaryTBody.insertRow();
+            for (let col = 2; col < data[0].length; col++) {
+                let newCell = newRow.insertCell();
+                if (col == 2) newCell.innerHTML = i.toString();
+                else newCell.classList.add("col-count");
+            }
+        }
+        summary.appendChild(summaryTable);
+        board.appendChild(summary);
+        board.appendChild(resultsDiv);
         updateGuitarStyle();
         };
         reader.readAsText(file);
@@ -231,7 +250,7 @@ function initUpdate() {
 }
 
 function updateTable(i) {
-    var newRow = document.getElementById(`group-${data[i][1]}-${data[i][2]}`).querySelector("table tbody").insertRow();
+    let newRow = document.getElementById(`group-${data[i][1]}-${data[i][2]}`).querySelector("table tbody").insertRow();
     newRow.id = `member-${i-1}`;
     newRow.draggable = true;
     newRow.addEventListener('dragstart', function (e) {
@@ -273,8 +292,8 @@ function updateTable(i) {
             data[parseInt(dragSrcEl.id.split("-")[1])+1][2] = data[parseInt(this.id.split("-")[1])+1][2];
             updateColCount(srcParentId);
             updateColCount(trgParentId);
+            updateGuitarStyle();
         }
-        updateGuitarStyle();
         document.querySelectorAll('.dragged-border').forEach(function (el) {
             el.classList.remove('dragged-border');
         });
@@ -284,7 +303,7 @@ function updateTable(i) {
     });
     for (let col = 0; col < data[i].length; col++) {
         if (col > 2 || col == 0) {
-            var newCell = newRow.insertCell();
+            let newCell = newRow.insertCell();
             newCell.innerHTML = data[i][col];
             if (col > 3) {
                 if ((data[i][3] == 1 || data[i][3] == "1") && (data[i][col] == 1 || data[i][col] == "1")) {
@@ -293,6 +312,38 @@ function updateTable(i) {
                     newCell.classList.add('regular-available');
                 }
             }
+        }
+    }
+}
+
+function updateSummaryTable() {
+    let summaryTable = document.querySelectorAll("#summary tbody tr");
+    let array = Array.from({ length: numOfGroups*(parts.length+1) }, () => Array(data[0].length-3).fill(0));
+    data.slice(1).forEach(row => {
+        let isGuitar = (row[3] == 1 || row[3] == "1");
+        let loc = (parseInt(row[2])-1)*(parts.length+1);
+        for (let i = 0; i < array[0].length; i++) {
+            if (i == 0) {
+                array[loc+parts.indexOf(row[1])][i]++;
+                if (isGuitar) array[loc+parts.length][i]++;
+            } else {
+                if (row[i+3] == 1 || row[i+3] == "1") {
+                    array[loc+parts.indexOf(row[1])][i]++;
+                    if (isGuitar) array[loc+parts.length][i]++;
+                }
+            }
+        }
+    });
+    for (let i = 0; i < summaryTable.length; i++) {
+        let cells = summaryTable[i].querySelectorAll("td");
+        for (let j = 1; j < cells.length; j++) {
+            let m = i*(parts.length+1);
+            cells[j].innerHTML =
+                `<span style="font-size:130%;">${array[m][j-1]}</span> /
+                <span style="font-size:130%;">${array[m+1][j-1]}</span> /
+                <span style="font-size:130%;">${array[m+2][j-1]}</span> /
+                <span style="font-size:130%;">${array[m+3][j-1]}</span>`;
+            if (array[m+3][j-1] > 0 && j != 1) cells[j].classList.add("guitar-available");
         }
     }
 }
@@ -321,6 +372,7 @@ function updateGuitarStyle() {
             }
         }
     }
+    updateSummaryTable();
 }
 
 function updateColCount(id) {
@@ -352,8 +404,8 @@ function sortRowsByTimeAvailable(array) {
 }
 
 function getTimeSums(part, group) {
-    var timeColumnIndices = Array.from({length: data[0].length-4}, (_, i) => i + 4);
-    var timeSums = new Array(timeColumnIndices.length).fill(0);
+    let timeColumnIndices = Array.from({length: data[0].length-4}, (_, i) => i + 4);
+    let timeSums = new Array(timeColumnIndices.length).fill(0);
     data.slice(1).filter(row => row[1] == part && row[2] == group).forEach(row => {
         timeColumnIndices.forEach((colIndex, i) => {
             timeSums[i] += row[colIndex];
@@ -375,24 +427,24 @@ function bestScoringPotential(testing) {
         if (Math.ceil(count_total/numOfGroups) <= count_sub) res[i-1] += 999999;
     }
     for (let i = 1; i <= numOfGroups; i++){
-        var array = defaultArray.slice();
+        let array = defaultArray.slice();
         for (let j = 1; j <= numOfGroups; j++) {
             if (i == j) {
                 array[i] += testing.slice(4);
             }
         }
-        var numRows = array.length;
-        var numColumns = array[0].length;
-        var columnSums = new Array(numColumns).fill(0);
+        let numRows = array.length;
+        let numColumns = array[0].length;
+        let columnSums = new Array(numColumns).fill(0);
         for (let i = 0; i < numRows - 1; i++) {
             for (let j = i + 1; j < numRows; j++) {
                 for (let col = 0; col < numColumns; col++) {
-                    var diff = array[i][col] - array[j][col];
+                    let diff = array[i][col] - array[j][col];
                     columnSums[col] += diff * diff;
                 }
             }
         }
-        var res1 = columnSums.reduce((acc, num) => acc + num, 0);
+        let res1 = columnSums.reduce((acc, num) => acc + num, 0);
         res[i-1] = res1 / columnSums.length;
     }
     let minIndex = 0;
@@ -409,7 +461,7 @@ function bestScoringPotential(testing) {
 
 function improvise() {
     data = sortRowsByTimeAvailable(data).slice();
-    var guitarView = data.slice(1).filter(row => row[3] == 1);
+    let guitarView = data.slice(1).filter(row => row[3] == 1);
     for (let i = 1; i <= numOfGroups && guitarView.length != 0; i++) {
         data.forEach(row => {
             if (row[0] == guitarView[0][0]) {
@@ -421,10 +473,10 @@ function improvise() {
     if (guitarView.length != 0) {
         //TODO potentially more logic to distribute the guitarists
     }
-    var unallocatedView = data.slice(1).filter(row => row[2] == null);
+    let unallocatedView = data.slice(1).filter(row => row[2] == null);
     for (let i = 0; i < parts.length; i++) {
-        var partUnallocatedView = unallocatedView.filter(row => row[1] == parts[i]);
-        var j = 1;
+        let partUnallocatedView = unallocatedView.filter(row => row[1] == parts[i]);
+        let j = 1;
         while (partUnallocatedView.length != 0){
             data.forEach(row => {
                 if (row[0] == partUnallocatedView[0][0]) {
@@ -441,32 +493,32 @@ function improvise() {
 }
 
 function saveToFile() {
-    var csvContent = data.map(row => row.join(",")).join("\n");
-    var blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    var url = URL.createObjectURL(blob);
-    var link = document.createElement("a");
+    let csvContent = data.map(row => row.join(",")).join("\n");
+    let blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    let url = URL.createObjectURL(blob);
+    let link = document.createElement("a");
     link.href = url;
-    var now = new Date();
-    var year = now.getFullYear();
-    var month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
-    var day = String(now.getDate()).padStart(2, "0");
-    var hours = String(now.getHours()).padStart(2, "0");
-    var minutes = String(now.getMinutes()).padStart(2, "0");
+    let now = new Date();
+    let year = now.getFullYear();
+    let month = String(now.getMonth() + 1).padStart(2, "0"); // Months are 0-based
+    let day = String(now.getDate()).padStart(2, "0");
+    let hours = String(now.getHours()).padStart(2, "0");
+    let minutes = String(now.getMinutes()).padStart(2, "0");
     link.download = `valentines-availability-division-${year}-${month}-${day}-${hours}-${minutes}.csv`;
     link.click();
     URL.revokeObjectURL(url);
 }
 
 function displayResult() {
-    var resDiv = document.getElementById("results");
+    let resDiv = document.getElementById("results");
     array =  data.slice(1).sort((a, b) => {
         if (a[2] !== b[2]) {
             return (a[2] || "").localeCompare(b[2] || "");
         }
         return a[0].localeCompare(b[0]);
     });
-    var currentGroup = 1;
-    var results = "<span class='group-title'>Group 1</span><br>";
+    let currentGroup = 1;
+    let results = "<span class='group-title'>Group 1</span><br>";
     for (let i = 0; i < array.length; i++) {
         if (array[i][2] != currentGroup.toString()) {
             currentGroup++;

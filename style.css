@@ -207,6 +207,14 @@ tbody tr {
     cursor: grab;
 }
 
+#summary {
+    margin-top: 10px;
+}
+
+#summary tr {
+    cursor: auto;
+}
+
 tbody tr:hover {
     background-color: #999999;
 }
