@@ -226,7 +226,7 @@ function initUpdate() {
         for (let col = 2; col < data[0].length; col++) {
             let newCell = sumRow.insertCell();
             if (col == 2) newCell.outerHTML = `<th class="col-name"">Group</th>`;
-            else if (col == 3) newCell.outerHTML = `<th class="col-name">Total ${parts.join("/")}/Guitar</th>`;
+            else if (col == 3) newCell.outerHTML = `<th class="col-name" style="width: 16em;">Total ${parts.join("/")}/Guitar</th>`;
             else if (col > 3) newCell.outerHTML = `<th class="col-name">${data[0][col]}</th>`;
         }
         let summaryTBody = summaryTable.createTBody();
