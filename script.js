@@ -125,17 +125,17 @@ function initUpdate() {
                             } else if (j == 4) {
                                 if (i == 0) {
                                     data[data.length-1].push("Guitar");
-                                } else if (cell.trim() == "Yes") {
+                                } else if (cell.trim().toLowerCase() == "yes") {
                                     data[data.length-1].push(1);
-                                } else if (cell.trim() == "No") {
+                                } else if (cell.trim().toLowerCase() == "no") {
                                     data[data.length-1].push(0);
                                 } else {
                                     data[data.length-1].push(cell.trim());
                                 }
                             } else if (j > 4) {
-                                if (cell.trim() == "Yes") {
+                                if (cell.trim().toLowerCase() == "yes") {
                                     data[data.length-1].push(1);
-                                } else if (cell.trim() == "No") {
+                                } else if (cell.trim().toLowerCase() == "no") {
                                     data[data.length-1].push(0);
                                 } else {
                                     data[data.length-1].push(cell.trim());
