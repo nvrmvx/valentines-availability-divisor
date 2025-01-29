@@ -376,6 +376,8 @@ function updateGuitarStyle() {
 }
 
 function updateColCount(id) {
+    let row = document.querySelectorAll(`#${id} .col-count.none-available`);
+    row.forEach(r => {r.classList.remove("none-available")});
     let sums = Array(data[0].length-2).fill(0);
     document.getElementById(id).querySelectorAll("table tr").forEach(row => {
         let elements = row.querySelectorAll("td");
@@ -387,9 +389,10 @@ function updateColCount(id) {
             })
         }
     });
-    let row = document.getElementById(id).querySelectorAll("table thead tr")[1].querySelectorAll(".col-count");
+    row = document.getElementById(id).querySelectorAll("table thead tr")[1].querySelectorAll(".col-count");
     for (let col = 0; col < data[0].length-2; col++) {
         row[col].innerHTML = sums[col];
+        if (sums[col] == 0 && col != 1) row[col].classList.add("none-available");
     }
 }
 

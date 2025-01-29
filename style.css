@@ -203,6 +203,11 @@ td {
     color: #ffffff;
 }
 
+.none-available {
+    background-color: #e04a2c;
+    color: #ffffff;
+}
+
 tbody tr {
     cursor: grab;
 }
