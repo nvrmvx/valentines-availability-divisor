@@ -413,6 +413,7 @@ function getTimeSums(part, group) {
     });
     return timeSums;
 }
+var check = 0;
 function bestScoringPotential(testing) {
     let defaultArray = new Array();
     let res = new Array(numOfGroups).fill(0);
@@ -422,16 +423,17 @@ function bestScoringPotential(testing) {
             return row[1] == testing[1] ? count + 1 : count;
           }, 0);
         let count_sub = data.slice(1).reduce((count, row) => {
-            return row[1] == testing[1] && row[3] == (i+1).toString() ? count + 1 : count;
+            return row[1] == testing[1] && row[2] == (i+1).toString() ? count + 1 : count;
         }, 0);
-        if (Math.ceil(count_total/numOfGroups) <= count_sub) res[i-1] += 999999;
+        if (check < 5) console.log(`${count_total} ${Math.ceil(count_total/numOfGroups)} ${count_sub}`);
+        if (Math.ceil(count_total/numOfGroups) <= count_sub) res[i] = 9999;
+        else res[i] = 0;
     }
+    if (check < 5) console.log(res);
     for (let i = 1; i <= numOfGroups; i++){
-        let array = defaultArray.slice();
+        let array = defaultArray.map(arr => Array.isArray(arr) ? [...arr] : arr);
         for (let j = 1; j <= numOfGroups; j++) {
-            if (i == j) {
-                array[i] += testing.slice(4);
-            }
+            if (i == j) for (let z = 0; z < array[0].length; z++) array[i-1][z] += testing[z+4];
         }
         let numRows = array.length;
         let numColumns = array[0].length;
@@ -445,18 +447,13 @@ function bestScoringPotential(testing) {
             }
         }
         let res1 = columnSums.reduce((acc, num) => acc + num, 0);
-        res[i-1] = res1 / columnSums.length;
+        res[i-1] = res[i-1] + res1 / columnSums.length;
     }
+    if (check < 5) console.log(res);
+    check++;
     let minIndex = 0;
-    for (let i = 1; i < array.length; i++) {
-        if (array[i] < array[minIndex]) {
-            minIndex = i;
-    }
+    for (let i = 1; i < res.length; i++) if (res[i] < res[minIndex]) minIndex = i;
     return (minIndex+1).toString();
-  }
-
-  return minIndex;
-    return 
 }
 
 function improvise() {
@@ -480,8 +477,8 @@ function improvise() {
         while (partUnallocatedView.length != 0){
             data.forEach(row => {
                 if (row[0] == partUnallocatedView[0][0]) {
-                    row[2] = j.toString();
-                    //TODO this is for improving initial division logic row[2] = bestScoringPotential(row);
+                    // row[2] = j.toString();
+                    row[2] = bestScoringPotential(row);
                 }
             });
             j++;
