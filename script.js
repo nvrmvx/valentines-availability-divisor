@@ -21,7 +21,7 @@ function initUpdate() {
     if (files.length > 0 ) {
         for (let i = 0; i < parts.length; i++) {
             for (let j = 1; j <= numOfGroups; j++) {
-                const group = document.createElement("div");
+                let group = document.createElement("div");
                 group.id = `group-${parts[i]}-${j}`;
                 group.className = "group";
                 group.innerHTML =
@@ -103,17 +103,17 @@ function initUpdate() {
                                 if (i == 0) {
                                     data[data.length-1].push("Guitar");
                                 } else if (cell.trim().toLowerCase() == "yes") {
-                                    data[data.length-1].push(1);
+                                    data[data.length-1].push("1");
                                 } else if (cell.trim().toLowerCase() == "no") {
-                                    data[data.length-1].push(0);
+                                    data[data.length-1].push("0");
                                 } else {
                                     data[data.length-1].push(cell.trim());
                                 }
                             } else if (j > 4) {
                                 if (cell.trim().toLowerCase() == "yes") {
-                                    data[data.length-1].push(1);
+                                    data[data.length-1].push("1");
                                 } else if (cell.trim().toLowerCase() == "no") {
-                                    data[data.length-1].push(0);
+                                    data[data.length-1].push("0");
                                 } else {
                                     data[data.length-1].push(cell.trim().split(" - ").join("<br>"));
                                 }
@@ -281,13 +281,11 @@ function updateTable(i) {
     for (let col = 0; col < data[i].length; col++) {
         if (col > 2 || col == 0) {
             let newCell = newRow.insertCell();
-            newCell.innerHTML = data[i][col];
+            if (col > 2) newCell.innerHTML = (data[i][col] == "1") ? "yes" : "no";
+            else newCell.innerHTML = data[i][col];
             if (col > 3) {
-                if ((data[i][3] == 1 || data[i][3] == "1") && (data[i][col] == 1 || data[i][col] == "1")) {
-                    newCell.classList.add("guitar-available");
-                } else if (data[i][col] == 1 || data[i][col] == "1") {
-                    newCell.classList.add('regular-available');
-                }
+                if (data[i][3] == "1" && data[i][col] == "1") newCell.classList.add("guitar-available");
+                else if (data[i][col] == "1") newCell.classList.add('regular-available');
             }
         }
     }
@@ -297,14 +295,14 @@ function updateSummaryTable() {
     let summaryTable = document.querySelectorAll("#summary tbody tr");
     let array = Array.from({ length: numOfGroups*(parts.length+1) }, () => Array(data[0].length-3).fill(0));
     data.slice(1).forEach(row => {
-        let isGuitar = (row[3] == 1 || row[3] == "1");
+        let isGuitar = (row[3] == "1");
         let loc = (parseInt(row[2])-1)*(parts.length+1);
         for (let i = 0; i < array[0].length; i++) {
             if (i == 0) {
                 array[loc+parts.indexOf(row[1])][i]++;
                 if (isGuitar) array[loc+parts.length][i]++;
             } else {
-                if (row[i+3] == 1 || row[i+3] == "1") {
+                if (row[i+3] == "1") {
                     array[loc+parts.indexOf(row[1])][i]++;
                     if (isGuitar) array[loc+parts.length][i]++;
                 }
@@ -332,13 +330,8 @@ function updateGuitarStyle() {
     for (let i = 1; i <= numOfGroups; i++) {
         let sums = Array(data[0].length-4).fill(0);
         for (let j = 0; j < parts.length; j++) {
-            document.getElementById(`group-${parts[j]}-${i}`).querySelectorAll("table tr").forEach(row => {
-                let elements = row.querySelectorAll("td");
-                if (elements) {
-                    for (let z = 2; z < elements.length; z++) {
-                        if ((elements[z].innerHTML != "0") && (elements[1].innerHTML == "1")) sums[z-2]++;
-                    }
-                }
+            data.slice(1).filter(row => row[2] == i.toString() && row[1] == parts[j]).forEach(row => {
+                for (let z = 4; z < row.length; z++) if (row[z] != "0" && row[3] == "1") sums[z-4]++;
             });
         }
         for (let j = 0; j < parts.length; j++) {
@@ -357,15 +350,9 @@ function updateColCount(id) {
     let row = document.querySelectorAll(`#${id} .col-count.none-available`);
     row.forEach(r => {r.classList.remove("none-available")});
     let sums = Array(data[0].length-2).fill(0);
-    document.getElementById(id).querySelectorAll("table tr").forEach(row => {
-        let elements = row.querySelectorAll("td");
-        if (elements) {
-            let j = 0;
-            elements.forEach(element => {
-                if (element.innerHTML != "0") sums[j]++;
-                j++;
-            })
-        }
+    let info = id.split("-").slice(1);
+    data.slice(1).filter(row => row[2] == info[1] && row[1] == info[0]).forEach(row => {
+        for (let j = 2; j < row.length; j++) if (row[j] != "0" && row[j] != 0) sums[j-2]++;
     });
     row = document.getElementById(id).querySelectorAll("table thead tr")[1].querySelectorAll(".col-count");
     for (let col = 0; col < data[0].length-2; col++) {
@@ -374,14 +361,14 @@ function updateColCount(id) {
     }
 }
 
-function sortRowsByTimeAvailable(array) {
-    const header = array[0];
-    const sortedRows = array.slice(1).sort((rowA, rowB) => {
-        const sumA = rowA.slice(4).reduce((sum, val) => sum + val, 0);
-        const sumB = rowB.slice(4).reduce((sum, val) => sum + val, 0);
+function sortRowsByTimeAvailable() {
+    let header = data[0];
+    let sortedRows = data.slice(1).sort((rowA, rowB) => {
+        let sumA = rowA.slice(4).reduce((sum, val) => parseInt(sum) + parseInt(val), 0);
+        let sumB = rowB.slice(4).reduce((sum, val) => parseInt(sum) + parseInt(val), 0);
         return sumB - sumA;
     });
-    return [header, ...sortedRows];
+    data = [header, ...sortedRows];
 }
 
 function getTimeSums(part, group) {
@@ -389,7 +376,7 @@ function getTimeSums(part, group) {
     let timeSums = new Array(timeColumnIndices.length).fill(0);
     data.slice(1).filter(row => row[1] == part && row[2] == group).forEach(row => {
         timeColumnIndices.forEach((colIndex, i) => {
-            timeSums[i] += row[colIndex];
+            timeSums[i] += parseInt(row[colIndex]);
         });
     });
     return timeSums;
@@ -412,8 +399,9 @@ function bestScoringPotential(testing) {
     for (let i = 1; i <= numOfGroups; i++){
         let array = defaultArray.map(arr => Array.isArray(arr) ? [...arr] : arr);
         for (let j = 1; j <= numOfGroups; j++) {
-            if (i == j) for (let z = 0; z < array[0].length; z++) array[i-1][z] += testing[z+4];
+            if (i == j) for (let z = 0; z < array[0].length; z++) array[i-1][z] += parseInt(testing[z+4]);
         }
+        console.log(array);
         let numRows = array.length;
         let numColumns = array[0].length;
         let columnSums = new Array(numColumns).fill(0);
@@ -434,18 +422,16 @@ function bestScoringPotential(testing) {
 }
 
 function improvise() {
-    data = sortRowsByTimeAvailable(data).slice();
+    sortRowsByTimeAvailable();
     let guitarView = data.slice(1).filter(row => row[3] == 1);
     for (let i = 1; i <= numOfGroups && guitarView.length != 0; i++) {
         data.forEach(row => {
-            if (row[0] == guitarView[0][0]) {
-                row[2] = i.toString();
-            }
+            if (row[0] == guitarView[0][0]) row[2] = i.toString();
         });
         guitarView = guitarView.filter(row => row[2] == null);
     }
     if (guitarView.length != 0) {
-        //TODO potentially more logic to distribute the guitarists
+        //TODO potentially more logic to distribute the guitarists so that there are no gaps
     }
     let unallocatedView = data.slice(1).filter(row => row[2] == null);
     for (let i = 0; i < parts.length; i++) {
@@ -454,7 +440,6 @@ function improvise() {
         while (partUnallocatedView.length != 0){
             data.forEach(row => {
                 if (row[0] == partUnallocatedView[0][0]) {
-                    // row[2] = j.toString();
                     row[2] = bestScoringPotential(row);
                 }
             });
