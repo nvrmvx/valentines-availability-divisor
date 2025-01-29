@@ -339,10 +339,10 @@ function updateSummaryTable() {
         for (let j = 1; j < cells.length; j++) {
             let m = i*(parts.length+1);
             cells[j].innerHTML =
-                `<span style="font-size:130%;">${array[m][j-1]}</span> /
-                <span style="font-size:130%;">${array[m+1][j-1]}</span> /
-                <span style="font-size:130%;">${array[m+2][j-1]}</span> /
-                <span style="font-size:130%;">${array[m+3][j-1]}</span>`;
+               `<span style="font-size:130%;${(array[m][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m][j-1]}</span> /
+                <span style="font-size:130%;${(array[m+1][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+1][j-1]}</span> /
+                <span style="font-size:130%;${(array[m+2][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+2][j-1]}</span> /
+                <span style="font-size:130%;${(array[m+3][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+3][j-1]}</span>`;
             if (array[m+3][j-1] > 0 && j != 1) cells[j].classList.add("guitar-available");
         }
     }
