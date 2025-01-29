@@ -5,28 +5,6 @@ var parts = ["Alto","Soprano","Boys"]
 var numOfGroups = 3;
 var dragSrcEl = null;
 
-var displayDiv = document.createElement("div");
-displayDiv.style = "width: 100%;";
-
-var resultsDiv = document.createElement("div");
-resultsDiv.style = "display: flex;width: 100%;margin: 30px 0;align-items: center;justify-content: center;flex-wrap: wrap;";
-var saveBtn = document.createElement("input");
-saveBtn.type = "submit"
-saveBtn.value = "Save to a CSV";
-saveBtn.style = "display: inline;margin-top: 5px;";
-saveBtn.addEventListener("click", saveToFile)
-resultsDiv.appendChild(saveBtn);
-var displayResultsBtn = document.createElement("input");
-displayResultsBtn.type = "submit"
-displayResultsBtn.value = "Display results";
-displayResultsBtn.style = "display: inline;margin-top: 5px;margin-left: 10px;";
-displayResultsBtn.addEventListener("click", displayResult)
-resultsDiv.appendChild(displayResultsBtn);
-var childResultsDiv = document.createElement("div");
-childResultsDiv.id = "results";
-childResultsDiv.style = "width: 100%;text-align: center;margin-top: 30px;";
-resultsDiv.appendChild(childResultsDiv);
-
 function initUpdate() {
     data = new Array();
     parts = document.getElementById("parts").value.split(",");
@@ -35,12 +13,12 @@ function initUpdate() {
     }
     numOfGroups = document.getElementById("num-of-groups").value;
     const board = document.getElementById("board");
-    board.innerHTML = '';
-    displayDiv.innerHTML = '';
+    board.innerHTML = "";
+    document.getElementById("display-btns").innerHTML = "";
 
     // https://makitweb.com/how-to-read-csv-file-and-display-its-content-using-javascript/
     const files = document.querySelector('#data-file').files;
-    if(files.length > 0 ){
+    if (files.length > 0 ) {
         for (let i = 0; i < parts.length; i++) {
             for (let j = 1; j <= numOfGroups; j++) {
                 const group = document.createElement("div");
@@ -92,8 +70,7 @@ function initUpdate() {
                     displayBtns[y].value = `${y == i ? "Showing" : "Show"} ${parts[y]}`;
                 }
             })
-            displayDiv.appendChild(displayBtn);
-            document.querySelector(".head").appendChild(displayDiv);
+            document.getElementById("display-btns").appendChild(displayBtn);
         }
         const file = files[0];
         let reader = new FileReader();
@@ -138,7 +115,7 @@ function initUpdate() {
                                 } else if (cell.trim().toLowerCase() == "no") {
                                     data[data.length-1].push(0);
                                 } else {
-                                    data[data.length-1].push(cell.trim());
+                                    data[data.length-1].push(cell.trim().split(" - ").join("<br>"));
                                 }
                             }
                             j++;
@@ -159,7 +136,7 @@ function initUpdate() {
                                     let newCell = newRow.insertCell();
                                     if (x == 0) {
                                         if (col == 2) newCell.outerHTML = `<th class="col-name" style="width: 16em;">Name</th>`;
-                                        else if (col == 3) newCell.outerHTML = `<th class="col-name">Guitar</th>`;
+                                        else if (col == 3) newCell.outerHTML = `<th class="col-name" style="width: 3em;">Guitar</th>`;
                                         else if (col > 3) newCell.outerHTML = `<th class="col-name">${data[i][col]}</th>`;
                                     } else newCell.outerHTML = `<th class="col-count">0</th>`;
                                 }
@@ -225,7 +202,7 @@ function initUpdate() {
         let sumRow = summaryTHead.insertRow();
         for (let col = 2; col < data[0].length; col++) {
             let newCell = sumRow.insertCell();
-            if (col == 2) newCell.outerHTML = `<th class="col-name"">Group</th>`;
+            if (col == 2) newCell.outerHTML = `<th class="col-name" style="width: 3em;">Group</th>`;
             else if (col == 3) newCell.outerHTML = `<th class="col-name" style="width: 16em;">Total ${parts.join("/")}/Guitar</th>`;
             else if (col > 3) newCell.outerHTML = `<th class="col-name">${data[0][col]}</th>`;
         }
@@ -240,7 +217,7 @@ function initUpdate() {
         }
         summary.appendChild(summaryTable);
         board.appendChild(summary);
-        board.appendChild(resultsDiv);
+        document.getElementById("res-btns").style.display = "flex";
         updateGuitarStyle();
         };
         reader.readAsText(file);
@@ -338,11 +315,12 @@ function updateSummaryTable() {
         let cells = summaryTable[i].querySelectorAll("td");
         for (let j = 1; j < cells.length; j++) {
             let m = i*(parts.length+1);
-            cells[j].innerHTML =
-               `<span style="font-size:130%;${(array[m][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m][j-1]}</span> /
-                <span style="font-size:130%;${(array[m+1][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+1][j-1]}</span> /
-                <span style="font-size:130%;${(array[m+2][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+2][j-1]}</span> /
-                <span style="font-size:130%;${(array[m+3][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+3][j-1]}</span>`;
+            cells[j].innerHTML = "";
+            for (let z = 0; z < parts.length+1; z++) {
+                if (z != 0) cells[j].innerHTML += " / ";
+                cells[j].innerHTML +=
+                    `<span style="font-size:130%;${(array[m+z][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+z][j-1]}</span>`;
+            }
             if (array[m+3][j-1] > 0 && j != 1) cells[j].classList.add("guitar-available");
         }
     }

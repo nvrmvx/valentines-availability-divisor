@@ -8,8 +8,9 @@
     <title>Valentine's Day Groups Divisor</title>
     <link rel="shortcut icon" href="logo_val.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href=
-"https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
 </head>
 
 <body>
@@ -23,8 +24,14 @@
             <input type="file" id="data-file" name="data-file" accept=".csv">
             <input type="submit" id="upload" value="Upload" onclick="initUpdate()">
         </div>
+        <div id="display-btns" style="width: 100%;"></div>
     </div>
     <div id="board">
+    </div>
+    <div id="res-btns" style="display:none;width:100%;margin:30px 0px;align-items:center;justify-content:center;flex-wrap:wrap;">
+        <input type="submit" value="Save to a CSV" style="display:inline;margin-top:5px;" onclick="saveToFile()">
+        <input type="submit" value="Display results" style="display:inline;margin:5px 0 0 10px;" onclick="displayResult()">
+        <div id="results" style="width:100%;text-align:center;margin-top:30px;"></div>
     </div>
 
     <script src="script.js"></script>

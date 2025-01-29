@@ -1,6 +1,6 @@
 /* copied and edited from https://www.geeksforgeeks.org/build-a-drag-drop-kanban-board-using-html-css-javascript/ */
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: #e4e4e4;
     margin: 0;
     padding: 0;
@@ -61,7 +61,7 @@ body {
     flex-wrap: wrap;
     justify-content: space-around;
     margin-top: 30px;
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .group {
