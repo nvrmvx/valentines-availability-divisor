@@ -139,7 +139,7 @@ function initUpdate() {
                 if (i == 0) displayBtn.value = `Showing ${parts[i]}`;
                 displayBtn.style = `${i == 0 ? "" : "margin-left: 10px;"}margin-top: 5px;`;
                 displayBtn.addEventListener("click", function(e) {
-                    let displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
+                    let displayBtns = document.getElementById("display-btns").querySelectorAll("input");
                     for (let y = 0; y < parts.length; y++) {
                         for (let z = 1; z <= numOfGroups; z++) {
                             document.getElementById(`group-${parts[y]}-${z}`).style = y == i ? "display: block;" : "display: none;";
