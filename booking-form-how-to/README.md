@@ -209,7 +209,9 @@ If there is EVER two or more people who book the exact same slot at the exact sa
 <br>
 <button onclick="generateSlots()">Generate Schedule</button>
 <br>
-<textarea id="output" cols="143" rows="2" style="resize:none;"></textarea>
+<textarea id="output" cols="143" rows="10" style="resize:none;"></textarea>
+<br>
+There are <span id="total">0</span> time slots total! This is important for later.
 <br>
 
 ## **3. _(optional, but recommended)_ Create a Separate Google Sheet for the Members (for Respondent Privacy)**
@@ -234,15 +236,18 @@ ggg
         let res = "";
         let h = start_h;
         let m = start_m;
+        let i = 0;
         
         while (h < end_h || (h === end_h && m < end_m)) {
             for (let g = 0; g < groups.length; g++) {
                 res += `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} | Group ${g + 1} ${groups[g]}\n`;
+                i += 1;
             }
             h = h + Math.floor((m + interval) / 60);
             m = (m + interval) % 60;
         }
         
-        document.getElementById("output").innerHTML = res;
+        document.getElementById("output").innerHTML = res.slice(0, -1);
+        document.getElementById("total").innerHTML = i;
     }
 </script>
