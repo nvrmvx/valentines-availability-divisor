@@ -1,5 +1,3 @@
-<head><link rel="shortcut icon" href="../logo_val.png" type="image/x-icon"></head>
-
 # How to Create a Booking Form for Valentine's?
 
 | Table of Contents |
@@ -10,26 +8,113 @@
 | [4. Create and Set Up the Apps Script for the Google Sheets](#4-create-and-set-up-the-apps-script-for-the-google-sheets) |
 
 ## **1. Create the Google Form**
-Don't copy the old form, that creates weird problems!
-<br><br>
 <input type="checkbox"> 1. Go to [Google Forms](https://docs.google.com/forms/) and search for
 <br>
 `Singing Valentines by NU Choir Template`
 <br>
 <br>
-<input type="checkbox"> 2. Open it and make a copy of it:
+<input type="checkbox"> 2. Open it and click `Make a copy`:
 <br>
 <br>
 ![make a copy button](../assets/step_1_2.jpg "Make a copy button")
 <br>
 <br>
-In the window that opens after clicking it rename it to "Singing Valentines by NU Choir `current year`" and click `Make a copy`
+<input type="checkbox"> In the window that opens after clicking it rename it to "Singing Valentines by NU Choir `current year`" and click `Make a copy`.
 <br>
 <br>
-<input type="checkbox"> 3. 
+![make a copy button](../assets/step_1_2_2.jpg "Make a copy button")
 <br>
 <br>
-Add the donation info
+<input type="checkbox"> 3. In the new form go to the second question that reads `Photo of the recipient` and change it to `File upload`, then click `Continue`.
+<br>
+<br>
+![change photo of the recipient question](../assets/step_1_3.jpg "Change photo of the recipient question")
+<br>
+<br>
+<input type="checkbox"> 4. Check the `Allow only specific file types` checkmark and choose `Image`.
+<br>
+<br>
+![allow only image file types](../assets/step_1_4.jpg "Allow only image file types")
+<br>
+<br>
+<input type="checkbox"> 5. Fill the description of the form with the songs on the roster this year and input the deadline to submit the form (doesn't have to be February 12th 23:59, choose whatever works for you), but KEEP the emojis next to the group names (The 🌟 💝 🌸 and 💘. If there are *somehow* more than four groups pick a new emoji that is distinct from these and has a positive vibe to it) so that it is easier for users later in the form!
+<br>
+<br>
+![change form description](../assets/step_1_5.jpg "Change form description")
+<br>
+<br>
+<input type="checkbox"> Find the song questions that are towards the end of the form and input the songs here as well. If there are less than four groups just copy the `break up song ❌:` text from the last group song question and delete the last group song question itself. If there are *somehow* more than four groups just add another question matching the style of the previous ones and add the `break up song ❌:` to it (so that stylistically that's the last song of the last group xD).
+<br>
+<br>
+![change song questions](../assets/step_1_5_2.jpg "Change song questions")
+<br>
+<br>
+Don't worry about the `the time and group` question for now. You can change the wording and style of anything on the form. If you want to change the order of the questions, you should **only** do that after linking a Google Sheet to the form!
+<br>
+<br>
+<input type="checkbox"> 6. Go to the `Settings`, click on the `Presentation`, click `Edit` on the `Confirmation message`, add the donation info (if you are doing that this year. if not delete the last line on every language) at the very bottom (or after each language, if you want) and save it.
+<br>
+<br>
+![change confirmation message](../assets/step_1_6.jpg "Change confirmation message")
+<br>
+<br>
+<input type="checkbox"> 7. Click `Publish`, click `Manage`, click `Nazarbayev University` on the `Editing view`, and click `Restricted`.
+<br>
+<br>
+![publish](../assets/step_1_7.jpg "Publish")
+<br>
+![publish](../assets/step_1_7_2.jpg "Publish")
+<br>
+<br>
+<input type="checkbox"> Decide whether you want to make it available to everybody, or only people with the Nazarbayev University email (you may change that later too, just in case you want to open it for NU only for the first couple hours, and then to everyone). Then press `Done` and `Publish`.
+<br>
+<br>
+![publish](../assets/step_1_7_3.jpg "Publish")
+<br>
+<br>
+<input type="checkbox"> 8. Click `Published`, switch the `Accepting responses` switcher, and click `Edit`.
+<br>
+<br>
+![not accepting responses message](../assets/step_1_8.jpg "Not accepting responses message")
+<br>
+<br>
+<input type="checkbox"> Edit the message in the following box (copy and paste in the songs from the form description, edit the time that you plan to open the form, and edit the "time available" in case you are taking lunch breaks as a whole and not in small sub-groups) and copy and paste it to the box in the `Responders will see this message` box:
+<br>
+<textarea cols="100" rows="33">
+Registration is not open yet. It will start on 10/02/YEAR at 12:00
+but you may already start planning your 💌Singing Valentine💌!
+Prepare the photo of your recipient (to find the person),
+think about the time (from 9:00 until 17:00),
+think about the university location (NO other blocks, such as dormitory, NUSOM, etc!),
+and choose ONE of the following songs:
+
+Тіркеу әлі басталған жоқ. Тіркеу 10/02/YEAR күні 12:00-де басталады
+бірақ сіз 💌Музыкалық Ғашықхатыңызды💌 қазірден бастап жоспарлай аласыз!
+Қабылдаушынын фотосын дайындаңыз (адамды табу үшін),
+уақытын таңдаңыз (9:00-ден 17:00-ге дейін),
+университеттегі локацияны таңдаңыз (жатақхана, НУСОМ немесе басқа блоктарға ЖЕТКІЗІЛМЕЙДІ!),
+және келесі әндердің БІРЕУІН таңдаңыз:
+
+Регистрация еще не началась. Она начнётся 10/02/YEAR в 12:00
+Но вы можете запланировать вашу 💌Поющую Валентинку💌 прямо сейчас!
+Подготовьте фотографию получателя (чтобы найти человека),
+выберите время (с 9:00 до 17:00),
+выберите локацию в университете (НЕ доставляем валентинки в общежитие, блоки НУСОМ и тд!),
+и выберите ОДНУ из следующих песен:
+
+Group 1 🌟
+♥️   Song - Artist
+
+Group 2 💝
+♥️   Song - Artist
+
+Group 3 🌸
+♥️   Song - Artist
+
+Group 4 💘
+♥️   Song - Artist
+♥️   or a break up song ❌:  Song - Artist
+</textarea>
 <br>
 <br>
 
