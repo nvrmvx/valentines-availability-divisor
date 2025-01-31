@@ -80,8 +80,7 @@ Don't worry about the `the time and group` question for now. You can change the 
 <br>
 <input type="checkbox"> Edit the message in the following box (copy and paste in the songs from the form description, edit the time that you plan to open the form, and edit the "time available" in case you are taking lunch breaks as a whole and not in small sub-groups), copy and paste it (to not drag the whole thing, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) to the box in the `Responders will see this message` box, and save it (just in case, copy and paste it to your saved messages in Telegram too, it's kind of a pain to rewrite).
 <br>
-<textarea cols="143" rows="33" style="resize:none;">
-Registration is not open yet. It will start on 10/02/YEAR at 12:00
+<textarea cols="143" rows="33" style="resize:none;">Registration is not open yet. It will start on 10/02/YEAR at 12:00
 but you may already start planning your 💌Singing Valentine💌!
 Prepare the photo of your recipient (to find the person),
 think about the time (from 9:00 until 17:00),
@@ -150,7 +149,68 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 ![style the headers](../assets/step_2_4.gif "Style the headers")
 <br>
 <br>
+<input type="checkbox"> Modify the formula in A2 on `Group 2` until the last Group you have (if you *somehow* have more than four groups modify the `M` in `'Form Responses 1'!C$2:M` to whatever the very last column letters are in the `Form Responses 1` sheet):
+<br>
+(1) `1,2,3,4,5,6,7,8` -> `1,2,3,4,5,6,7,9`. Change the last number in this list to one more with each sheet. So it is `9` for `Group 2`, `10` for `Group 3`, and etc.
+<br>
+(2) `".*Group 1.*"` -> `".*Group 2.*"`. Change the number the group number of the sheet you are modifying.
+<br>
 
+![change the formulas](../assets/step_2_4_2.gif "Change the formulas")
+<br>
+<br>
+Note: if you are reordering the columns for your convenience (but still keeping the "Group song" questions last), you may adapt all the formulas to your self by changing both `G`-s in `'Form Responses 1'!$G$2:$G` to the letter of the "Time and Group" column as it is in `Forms Responses 1`, and changing the `6` in `=TRUE)),6,True)` to the numbered order of that same "Time and Group" column (if you are counting on `Forms Responses 1`, subtract 2 from the number you get).
+<br>
+<br>
+<input type="checkbox"> 5. Copy everything from the box below (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of the `For code` sheet.
+<br>
+<textarea cols="143" rows="2" style="resize:none;">All slots	Occupied slots	Unique occupied slots		Total	Unique
+	=IFERROR(FILTER('Form Responses 1'!G$2:G, REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group.*") =TRUE))	=UNIQUE('Form Responses 1'!G2:G)		=COUNTA(B2:B)	=COUNTA(C2:C)
+				=IF(E2=F2,"No duplicates","Duplicates! Find 'em!")	</textarea>
+<br>
+<br>
+<input type="checkbox"> Choose the `E2` cell, go to `Format` -> `Conditional formatting`. Set it to turn green when `Text is exactly` is `No duplicates`, and to turn red when `Text is exactly` is `Duplicates!`.
+<br>
+
+![set up conditional formatting on for code sheet](../assets/step_2_5.gif "Set up conditional formatting on for code sheet")
+<br>
+<br>
+<input type="checkbox"> Choose the `B` column, go to `Format` -> `Conditional formatting`. Set the range to `B:B`, and set it to turn red when `Custom formula is` is `=countif(B:B,B1)>1`.
+<br>
+<br>
+<input type="checkbox"> Choose the `E2` cell, go to `Tools` -> `Conditional notifications`, click on `Add rule`, change `In this column` to `Custom range`, click `Add condition`, set it to `Text is exactly` is `Duplicates!`, input the `choir@nu.edu.kz` email in the box at the bottom, and click on `Save`.
+<br>
+
+![set up conditional notifications on for code sheet](../assets/step_2_5_2.gif "Set up conditional notifications on for code sheet")
+<br>
+<br>
+Quick manual check if the conditions work:
+<br>
+
+![check conditions in code sheet](../assets/step_2_5_3.gif "Check conditions in code sheet")
+<br>
+<br>
+If there is EVER two or more people who book the exact same slot at the exact same time, there WILL be a duplicate. If that happens, you will get an email about it (within 30 minutes allegedly), or you can see it colored in red immediately on the `For code` sheet of this Google Sheet (you can scroll through the time slots and see which time slot is problematic, and notify the person who was slightly later that their order is canceled ASAP, or maybe perform for them all by cascading the time slightly for both xD however you decide to handle it).
+<br>
+<br>
+<input type="checkbox"> 6. ggg
+<br>
+<label>Start Hour: <input type="number" id="start_h" min="0" max="23" value="9"></label>
+<br>
+<label>Start Minute: <input type="number" id="start_m" min="0" max="59" value="0"></label>
+<br>
+<label>End Hour: <input type="number" id="end_h" min="0" max="23" value="17"></label>
+<br>
+<label>End Minute: <input type="number" id="end_m" min="0" max="59" value="0"></label>
+<br>
+<label>Interval (minutes): <input type="number" id="interval" min="1" value="15"></label>
+<br>
+<label>Groups (comma-separated emojis): <input type="text" id="groups" value="🌟,💝,🌸,💘"></label>
+<br>
+<button onclick="generateSlots()">Generate Schedule</button>
+<br>
+<textarea id="output" cols="143" rows="2" style="resize:none;"></textarea>
+<br>
 
 ## **3. _(optional, but recommended)_ Create a Separate Google Sheet for the Members (for Respondent Privacy)**
 ggg
@@ -161,3 +221,28 @@ ggg
 ggg
 <br>
 <br>
+
+<script>
+    function generateSlots() {
+        let start_h = parseInt(document.getElementById("start_h").value);
+        let start_m = parseInt(document.getElementById("start_m").value);
+        let end_h = parseInt(document.getElementById("end_h").value);
+        let end_m = parseInt(document.getElementById("end_m").value);
+        let interval = parseInt(document.getElementById("interval").value);
+        let groups = document.getElementById("groups").value.split(",");
+        
+        let res = "";
+        let h = start_h;
+        let m = start_m;
+        
+        while (h < end_h || (h === end_h && m < end_m)) {
+            for (let g = 0; g < groups.length; g++) {
+                res += `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} | Group ${g + 1} ${groups[g]}\n`;
+            }
+            h = h + Math.floor((m + interval) / 60);
+            m = (m + interval) % 60;
+        }
+        
+        document.getElementById("output").innerHTML = res;
+    }
+</script>
