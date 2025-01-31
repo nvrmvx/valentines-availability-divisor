@@ -80,7 +80,7 @@ Don't worry about the `the time and group` question for now. You can change the 
 <br>
 <input type="checkbox"> Edit the message in the following box (copy and paste in the songs from the form description, edit the time that you plan to open the form, and edit the "time available" in case you are taking lunch breaks as a whole and not in small sub-groups), copy and paste it (to not drag the whole thing, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) to the box in the `Responders will see this message` box, and save it (just in case, copy and paste it to your saved messages in Telegram too, it's kind of a pain to rewrite).
 <br>
-<textarea cols="100" rows="33" style="resize:none;">
+<textarea cols="143" rows="33" style="resize:none;">
 Registration is not open yet. It will start on 10/02/YEAR at 12:00
 but you may already start planning your 💌Singing Valentine💌!
 Prepare the photo of your recipient (to find the person),
@@ -143,7 +143,7 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 <br>
 <input type="checkbox"> 4. Copy everything from the box below (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of every of the `Group #` sheets.
 <br>
-<textarea cols="100" rows="2" style="resize:none;">Receiver	Photo	Sender	Message	Time	Location	Contacts	Song
+<textarea cols="143" rows="2" style="resize:none;">Receiver	Photo	Sender	Message	Time	Location	Contacts	Song
 =SORT(IFERROR(FILTER(CHOOSECOLS('Form Responses 1'!C$2:M,1,2,3,4,5,6,7,8), REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group 1.*") =TRUE)),6,True)</textarea>
 <br>
 
