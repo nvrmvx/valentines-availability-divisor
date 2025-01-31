@@ -18,9 +18,24 @@
     <div class="head">
         <img src="logo_val.png">
         <h1>Valentine's Day Groups Divisor</h1>
+        <div style="margin-bottom:5px;">
+            <h3 style="width: 100%;text-align:center;margin:0;cursor:pointer;" onclick=showHideHow(this)>▶ How to use this site?</h3>
+            <p id="how" style="width:60%;text-align:center;font-size:12px;display:none;margin:0;">
+                (1) Specify the number of groups, and<br>
+                (2) Upload a CSV file created from a Google Sheets (File -> Download -> Comma Separated Values (.csv)) from a Google Form (<em>search the "NU Choir Valentines 2025 Member's Availability" form on the account, you may just import the questions from there and manually copy the settings from it</em>) that has "," commas as separators, and the following columns in that order (the question names don't matter. collect the emails through the Google Form setting, not a question):<br>
+                <span style="font-size:10px;">Timestamp (doesn't matter what it has), Email (has to be the university email), Name (doesn't matter for this site, but collect them anyway), Which part the person is singing (Multiple choice question), Is the person able to play guitar (ONLY yes or no), any number of time slot questions (ONLY yes or no. recommended to ask in 30 min windows from 09AM until 05PM).</span><br>
+                (2.1) OR upload a CSV file already saved from this website.
+            </p>
+            <h3 style="width: 100%;text-align:center;margin:0;cursor:pointer;" onclick=showHideWhat(this)>▶ What can this site do?</h3>
+            <p id="what" style="width:60%;text-align:center;font-size:12px;display:none;margin:0;">
+                You may drag and drop people from one group to another and Swap full groups of a part. Purple means the time slot has a guitar player, Red means that the time slot does not have ANY people from the particular part in that group.<br>
+                There is a handy summary table at the end (for easier checking of guitar availability and or if there are no people from a particular part in their group at a particular time).<br>
+                Try to have the number of people in a part as evenly distributed across groups in each time slot as possible, while keeping the total number of people from each part in groups even as well.<br><br>
+                Give it some time and enjoy! Good luck!
+            </p>
+        </div>
         <div>
-            Number of groups: <input type="number" name="num-of-groups" id="num-of-groups" min="1" step="1" value="4">
-            Comma-separated part list: <input type="text" name="parts" id="parts" value="Alto,Soprano,TenorBass">
+            Number of groups: <input type="number" name="num-of-groups" id="num-of-groups" min="1" step="1" value="3">
             <input type="file" id="data-file" name="data-file" accept=".csv">
             <input type="submit" id="upload" value="Upload" onclick="initUpdate()">
         </div>

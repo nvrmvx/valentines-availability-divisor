@@ -53,14 +53,14 @@ body {
 
 #upload {
     width: 200px;
-    margin: 10px 30% 0;
+    font-size: 120%;
+    margin: 10px 30% 10px;
 }
 
 #board {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    margin-top: 30px;
     margin-bottom: 30px;
 }
 
@@ -162,12 +162,6 @@ body {
     padding: 5px;
     margin-bottom: 5px;
     cursor: grab;
-}
-
-.delete-btn {
-    float: right;
-
-    cursor: pointer;
 }
 
 .tasks-in-btn {

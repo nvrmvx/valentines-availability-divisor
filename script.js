@@ -1,16 +1,36 @@
 // copied and edited from https://www.geeksforgeeks.org/build-a-drag-drop-kanban-board-using-html-css-javascript/
 // https://codepen.io/umurkose/pen/wvYWgQm
 var data = new Array();
-var parts = ["Alto","Soprano","Boys"]
+var parts = new Array();
 var numOfGroups = 3;
 var dragSrcEl = null;
 
+function showHideHow(h) {
+    el = document.getElementById("how");
+    if (el.style.display == "none") {
+        el.style.display = "block";
+        h.innerHTML = "▼ How to use this site?";
+    }
+    else {
+        el.style.display = "none";
+        h.innerHTML = "▶ How to use this site?";
+    }
+}
+
+function showHideWhat(h) {
+    el = document.getElementById("what");
+    if (el.style.display == "none") {
+        el.style.display = "block";
+        h.innerHTML = "▼ What can this site do?";
+    }
+    else {
+        el.style.display = "none";
+        h.innerHTML = "▶ What can this site do?";
+    }
+}
+
 function initUpdate() {
     data = new Array();
-    parts = document.getElementById("parts").value.split(",");
-    for (let i = 0; i < parts.length; i++) {
-        parts[i] = parts[i].trim();
-    }
     numOfGroups = document.getElementById("num-of-groups").value;
     const board = document.getElementById("board");
     board.innerHTML = "";
@@ -19,59 +39,6 @@ function initUpdate() {
     // https://makitweb.com/how-to-read-csv-file-and-display-its-content-using-javascript/
     const files = document.querySelector('#data-file').files;
     if (files.length > 0 ) {
-        for (let i = 0; i < parts.length; i++) {
-            for (let j = 1; j <= numOfGroups; j++) {
-                let group = document.createElement("div");
-                group.id = `group-${parts[i]}-${j}`;
-                group.className = "group";
-                group.innerHTML =
-                    `<h2>Group ${parts[i]} ${j}</h2>
-                    <hr>
-                    <table class="table-summary"></table>`;
-                group.style = "display: none;";
-                if (i == 0) group.style = "display: block;";
-                board.appendChild(group);
-                for (let z = 1; z <= numOfGroups; z++) {
-                    if (z != j) {
-                        let btn = document.createElement("input");
-                        btn.type = "submit"
-                        btn.value = `Swap with Group ${z} ${parts[i]}`;
-                        btn.style = "margin-left: 10px";
-                        btn.addEventListener("click", function(e) {
-                            let group1 = document.querySelectorAll(`#group-${parts[i]}-${j} tbody tr`);
-                            let group2 = document.querySelectorAll(`#group-${parts[i]}-${z} tbody tr`);
-                            for (let row = 0; row < group1.length; row++) {
-                                data[parseInt(group1[row].id.split("-")[1])+1][2] = z.toString();
-                                document.querySelector(`#group-${parts[i]}-${z} tbody`).appendChild(group1[row]);
-                            }
-                            for (let row = 0; row < group2.length; row++) {
-                                data[parseInt(group2[row].id.split("-")[1])+1][2] = j.toString();
-                                document.querySelector(`#group-${parts[i]}-${j} tbody`).appendChild(group2[row]);
-                            }
-                            updateColCount(`group-${parts[i]}-${j}`);
-                            updateColCount(`group-${parts[i]}-${z}`);
-                            updateGuitarStyle();
-                        })
-                        group.querySelector(`hr`).insertAdjacentElement("beforebegin", btn);
-                    }
-                }
-            }
-            let displayBtn = document.createElement("input");
-            displayBtn.type = "submit"
-            displayBtn.value = `Show ${parts[i]}`;
-            if (i == 0) displayBtn.value = `Showing ${parts[i]}`;
-            displayBtn.style = `${i == 0 ? "" : "margin-left: 10px;"}margin-top: 5px;`;
-            displayBtn.addEventListener("click", function(e) {
-                let displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
-                for (let y = 0; y < parts.length; y++) {
-                    for (let z = 1; z <= numOfGroups; z++) {
-                        document.getElementById(`group-${parts[y]}-${z}`).style = y == i ? "display: block;" : "display: none;";
-                    }
-                    displayBtns[y].value = `${y == i ? "Showing" : "Show"} ${parts[y]}`;
-                }
-            })
-            document.getElementById("display-btns").appendChild(displayBtn);
-        }
         const file = files[0];
         let reader = new FileReader();
         reader.onload = function(event) {
@@ -123,7 +90,64 @@ function initUpdate() {
                         i++;
                     }
                 });
+                parts = [...new Set(data.slice(1).map(row => row[1]).filter(part => part !== null && part !== undefined))].sort();
+                for (let i = 0; i < parts.length; i++) {
+                    parts[i] = parts[i].trim().replace(/[^a-zA-Z]+/g, "");
+                }
                 improvise();
+            }
+            for (let i = 0; i < parts.length; i++) {
+                for (let j = 1; j <= numOfGroups; j++) {
+                    let group = document.createElement("div");
+                    group.id = `group-${parts[i]}-${j}`;
+                    group.className = "group";
+                    group.innerHTML =
+                        `<h2>Group ${parts[i]} ${j}</h2>
+                        <hr>
+                        <table class="table-summary"></table>`;
+                    group.style = "display: none;";
+                    if (i == 0) group.style = "display: block;";
+                    board.appendChild(group);
+                    for (let z = 1; z <= numOfGroups; z++) {
+                        if (z != j) {
+                            let btn = document.createElement("input");
+                            btn.type = "submit"
+                            btn.value = `Swap with Group ${z} ${parts[i]}`;
+                            btn.style = "margin-left: 10px";
+                            btn.addEventListener("click", function(e) {
+                                let group1 = document.querySelectorAll(`#group-${parts[i]}-${j} tbody tr`);
+                                let group2 = document.querySelectorAll(`#group-${parts[i]}-${z} tbody tr`);
+                                for (let row = 0; row < group1.length; row++) {
+                                    data[parseInt(group1[row].id.split("-")[1])+1][2] = z.toString();
+                                    document.querySelector(`#group-${parts[i]}-${z} tbody`).appendChild(group1[row]);
+                                }
+                                for (let row = 0; row < group2.length; row++) {
+                                    data[parseInt(group2[row].id.split("-")[1])+1][2] = j.toString();
+                                    document.querySelector(`#group-${parts[i]}-${j} tbody`).appendChild(group2[row]);
+                                }
+                                updateColCount(`group-${parts[i]}-${j}`);
+                                updateColCount(`group-${parts[i]}-${z}`);
+                                updateGuitarStyle();
+                            })
+                            group.querySelector(`hr`).insertAdjacentElement("beforebegin", btn);
+                        }
+                    }
+                }
+                let displayBtn = document.createElement("input");
+                displayBtn.type = "submit"
+                displayBtn.value = `Show ${parts[i]}`;
+                if (i == 0) displayBtn.value = `Showing ${parts[i]}`;
+                displayBtn.style = `${i == 0 ? "" : "margin-left: 10px;"}margin-top: 5px;`;
+                displayBtn.addEventListener("click", function(e) {
+                    let displayBtns = document.querySelectorAll(".head div")[1].querySelectorAll("input");
+                    for (let y = 0; y < parts.length; y++) {
+                        for (let z = 1; z <= numOfGroups; z++) {
+                            document.getElementById(`group-${parts[y]}-${z}`).style = y == i ? "display: block;" : "display: none;";
+                        }
+                        displayBtns[y].value = `${y == i ? "Showing" : "Show"} ${parts[y]}`;
+                    }
+                })
+                document.getElementById("display-btns").appendChild(displayBtn);
             }
             for (let i = 0; i < data.length; i++) {
                 if (i == 0) {
@@ -171,6 +195,7 @@ function initUpdate() {
                                         updateColCount(trgParentId);
                                         updateGuitarStyle();
                                     }
+                                    dragSrcEl = null;
                                     // Remove the border classes from all table rows
                                     document.querySelectorAll('.dragged-border').forEach(function (el) {
                                         el.classList.remove('dragged-border');
@@ -271,6 +296,7 @@ function updateTable(i) {
             updateColCount(trgParentId);
             updateGuitarStyle();
         }
+        dragSrcEl = null;
         document.querySelectorAll('.dragged-border').forEach(function (el) {
             el.classList.remove('dragged-border');
         });
@@ -401,7 +427,6 @@ function bestScoringPotential(testing) {
         for (let j = 1; j <= numOfGroups; j++) {
             if (i == j) for (let z = 0; z < array[0].length; z++) array[i-1][z] += parseInt(testing[z+4]);
         }
-        console.log(array);
         let numRows = array.length;
         let numColumns = array[0].length;
         let columnSums = new Array(numColumns).fill(0);
