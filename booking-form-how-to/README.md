@@ -6,7 +6,7 @@
 | [2. Link a Google Sheet and Prepare It](#2-link-a-google-sheet-and-prepare-it) |
 | [3. Create a Separate Google Sheet for the Members (for Respondent Privacy)](#3-optional-but-recommended-create-a-separate-google-sheet-for-the-members-for-respondent-privacy) |
 | [4. Create and Set Up the Apps Script for the Google Sheets](#4-create-and-set-up-the-apps-script-for-the-google-sheets) |
-| [5. Notes about the booking form](#5-notes-about-the-booking-form) |
+| [5. Notes About the Booking Form and the Valentine's in General](#5-notes-about-the-booking-form-and-the-valentines-in-general) |
 
 ## **1. Create the Google Form**
 Throughout this guide please use the University email address (if NU still uses Gmail, if not you probably wan't to make a choir gmail account for the club).
