@@ -6,6 +6,7 @@
 | [2. Link a Google Sheet and Prepare It](#2-link-a-google-sheet-and-prepare-it) |
 | [3. Create a Separate Google Sheet for the Members (for Respondent Privacy)](#3-optional-but-recommended-create-a-separate-google-sheet-for-the-members-for-respondent-privacy) |
 | [4. Create and Set Up the Apps Script for the Google Sheets](#4-create-and-set-up-the-apps-script-for-the-google-sheets) |
+| [5. Notes about the booking form](#5-notes-about-the-booking-form) |
 
 ## **1. Create the Google Form**
 <input type="checkbox"> 1. Go to [Google Forms](https://docs.google.com/forms/) and search for
@@ -190,36 +191,66 @@ Quick manual check if the conditions work:
 ![check conditions in code sheet](../assets/step_2_5_3.gif "Check conditions in code sheet")
 <br>
 <br>
-If there is EVER two or more people who book the exact same slot at the exact same time, there WILL be a duplicate. If that happens, you will get an email about it (within 30 minutes allegedly), or you can see it colored in red immediately on the `For code` sheet of this Google Sheet (you can scroll through the time slots and see which time slot is problematic, and notify the person who was slightly later that their order is canceled ASAP, or maybe perform for them all by cascading the time slightly for both xD however you decide to handle it).
+If there is EVER two or more people who book the exact same slot at the exact same time, there WILL be a duplicate. If that happens, you will get an email about it (within 30 minutes allegedly, from my testing it's somewhat unreliable, so check the `For code` sheet regularly until all the time slots are gone), or you can see it colored in red immediately on the `For code` sheet of this Google Sheet (you can scroll through the time slots and see which time slot is problematic, and notify the person who was slightly later that their order is canceled ASAP, or maybe perform for them all by cascading the time slightly for both xD however you decide to handle it).
 <br>
 <br>
-<input type="checkbox"> 6. ggg
+<input type="checkbox"> 6. Generate the time slots for the groups. Below are the values you can change, the start time, end time, the interval between performances, and the comma separated list of the groups' distinct individual emojis (that's how the algorithm gets the number of groups too).
 <br>
-<label>Start Hour: <input type="number" id="start_h" min="0" max="23" value="9"></label>
 <br>
-<label>Start Minute: <input type="number" id="start_m" min="0" max="59" value="0"></label>
+<label><input type="number" id="start_h" min="0" max="23" value="9"><-Start Hour</label>
 <br>
-<label>End Hour: <input type="number" id="end_h" min="0" max="23" value="17"></label>
+<label><input type="number" id="start_m" min="0" max="59" value="0"><-Start Minute. Better keep this at 00 minutes</label>
 <br>
-<label>End Minute: <input type="number" id="end_m" min="0" max="59" value="0"></label>
+<label><input type="number" id="end_h" min="0" max="23" value="17"><-End Hour</label>
 <br>
-<label>Interval (minutes): <input type="number" id="interval" min="1" value="15"></label>
+<label><input type="number" id="end_m" min="0" max="59" value="0"><-End Minute</label>
 <br>
-<label>Groups (comma-separated emojis): <input type="text" id="groups" value="🌟,💝,🌸,💘"></label>
+<label><input type="number" id="interval" min="1" value="15"><-Interval (minutes). Potentially could be 10min (6 per hour), 12min (5 per hour), 15min (4 per hour)</label>
+<br>
+<label><input type="text" id="groups" value="🌟,💝,🌸,💘"><-Groups (comma-separated emojis)</label>
 <br>
 <button onclick="generateSlots()">Generate Schedule</button>
 <br>
 <textarea id="output" cols="143" rows="10" style="resize:none;"></textarea>
+There are <span id="total">0</span>(minus the number of time slots you delete) time slots total! This is important for later.
 <br>
-There are <span id="total">0</span> time slots total! This is important for later.
+<br>
+<input type="checkbox"> Delete all the time slots you don't want (e.g. not enough performers, no guitarists, lunch break for the whole group etc.). Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to `A2` of the `For code` sheet.
+<br>
+<br>
+<input type="checkbox"> Go to the form in the "Time and Group" question, click on the only option in that question so that it is all "blue" from being selected and paste the just copied time slots from the box above again.
 <br>
 
-## **3. _(optional, but recommended)_ Create a Separate Google Sheet for the Members (for Respondent Privacy)**
+![copy the time slots to the form](../assets/step_2_6.gif "Copy the time slots to the form")
+
+## **3. _(optional, but very recommended)_ Create a Separate Google Sheet for the Members (for Respondent Privacy)**
+So that non-LT members don't get access to people's real email addresses (other than the contact info users wrote, unless you want to keep that info LT-only as well).
+<br>
+<input type="checkbox"> 1. Click on the `Generate Cipher` below.
+<br>
+<button onclick="generateCipher()">Generate Cipher</button>
+<br>
+<textarea id="cipher" cols="143" rows="1" style="resize:none;"></textarea>
+<input type="checkbox"> Copy the cipher above and change the name of the `Form Responses 1`. Change both references in each `Group #` sheet formula from `Form Responses 1` to that cipher. Change all the `Form Responses 1` references in both formulas in `For code` sheet to that cipher.
+<br>
+<br>
+<input type="checkbox"> 2. Click on the `Share` button, make all the `General access` into `Restricted`.
+<br>
+<br>
+<input type="checkbox"> 3. Create a new Google Sheet, name it `Singing Valentines Schedule YEAR`, add sheets to it until you have a sheet for each group, rename them to `Group #`.
+<br>
+<br>
+<input type="checkbox"> 4. Copy the link of the original Google Sheet (only up to `/edit`). Paste it instead of `spreadsheet_url` in the box below, keep the `""`.
+<br>
+<textarea cols="143" rows="1" style="resize:none;">=IMPORTRANGE("spreadsheet_url", "Group 1!A1:H")</textarea>
+<input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number.
+
+## **4. Create and Set Up the Apps Script for the Google Sheets**
 ggg
 <br>
 <br>
 
-## **4. Create and Set Up the Apps Script for the Google Sheets**
+## **5. Notes about the booking form**
 ggg
 <br>
 <br>
@@ -240,7 +271,7 @@ ggg
         
         while (h < end_h || (h === end_h && m < end_m)) {
             for (let g = 0; g < groups.length; g++) {
-                res += `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} | Group ${g + 1} ${groups[g]}\n`;
+                res += `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')} | Group ${g + 1} ${groups[g].trim()}\n`;
                 i += 1;
             }
             h = h + Math.floor((m + interval) / 60);
@@ -249,5 +280,13 @@ ggg
         
         document.getElementById("output").innerHTML = res.slice(0, -1);
         document.getElementById("total").innerHTML = i;
+    }
+    function generateCipher() {
+        let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let cipher = "";
+        for (let i = 0; i < 12; i++) {
+            cipher += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById("cipher").innerHTML = cipher;
     }
 </script>
