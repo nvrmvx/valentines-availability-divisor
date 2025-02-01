@@ -79,7 +79,7 @@ Don't worry about the `the time and group` question for now. You can change the 
 ![not accepting responses message](../assets/step_1_8.jpg "Not accepting responses message")
 <br>
 <br>
-<input type="checkbox"> Edit the message in the following box (copy and paste in the songs from the form description, edit the time that you plan to open the form, and edit the "time available" in case you are taking lunch breaks as a whole and not in small sub-groups), copy and paste it (to not drag the whole thing, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) to the box in the `Responders will see this message` box, and save it (just in case, copy and paste it to your saved messages in Telegram too, it's kind of a pain to rewrite).
+<input type="checkbox"> Edit the message in the following box (copy and paste in the songs from the form description, edit the time that you plan to open the form, and edit the "time available" in case you are taking lunch breaks as a whole and not in small sub-groups), copy and paste it (to not drag the whole thing, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) to the box in the `Responders will see this message` box, and save it (just in case, copy and paste it to your saved messages in Telegram too, it's kind of a pain to rewrite, and some of the stuff later could overwrite this message).
 <br>
 <textarea cols="143" rows="33" style="resize:none;">Registration is not open yet. It will start on 10/02/YEAR at 12:00
 but you may already start planning your 💌Singing Valentine💌!
@@ -168,8 +168,6 @@ Note: if you are reordering the columns for your convenience (but still keeping 
 <textarea cols="143" rows="2" style="resize:none;">All slots	Occupied slots	Unique occupied slots		Total	Unique
 	=IFERROR(FILTER('Form Responses 1'!G$2:G, REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group.*") =TRUE))	=UNIQUE('Form Responses 1'!G2:G)		=COUNTA(B2:B)	=COUNTA(C2:C)
 				=IF(E2=F2,"No duplicates","Duplicates! Find 'em!")	</textarea>
-<br>
-<br>
 <input type="checkbox"> Choose the `E2` cell, go to `Format` -> `Conditional formatting`. Set it to turn green when `Text is exactly` is `No duplicates`, and to turn red when `Text is exactly` is `Duplicates!`.
 <br>
 
@@ -243,17 +241,154 @@ So that non-LT members don't get access to people's real email addresses (other 
 <input type="checkbox"> 4. Copy the link of the original Google Sheet (only up to `/edit`). Paste it instead of `spreadsheet_url` in the box below, keep the `""`.
 <br>
 <textarea cols="143" rows="1" style="resize:none;">=IMPORTRANGE("spreadsheet_url", "Group 1!A1:H")</textarea>
-<input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number.
+<input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number. You have to `Allow access` for the first time, for the Google Sheet to be able to get info from the original Google Sheet.
+<br>
+<br>
+<input type="checkbox"> 5. Choose the `Receiver`, `Sender`, `Message`, `Location`, `Contacts` columns, and set `Text wrapping` to `Wrap`. You could also choose the `Time` column right click it, click `Resize`, and set it to 40 (this would only show the time itself, more convenient).
+<br>
+
+![stylize the new google sheet](../assets/step_3_5.jpg "Stylize the new Google Sheet")
+<br>
+<br>
+<input type="checkbox"> 6. Click `Share`, let `Nazarbayev University` emails to `Edit` the new Google Sheet. So that members could color finished orders, add more details to the right of the table etc.
 
 ## **4. Create and Set Up the Apps Script for the Google Sheets**
-ggg
-<br>
+<input type="checkbox"> 1. Link an Apps Script to the **Google Sheets** (not Google Forms), name it `Singing Valentines by NU Choir YEAR (Code)`.
 <br>
 
+![link the apps script](../assets/step_4_1.jpg "Link the Apps Script")
+<br>
+<br>
+2. Change the following in the box below.
+<br>
+<input type="checkbox"> Replace the `F_ID` of the Google Form from the address bar between `/d/` and `/edit`.
+<br>
+<input type="checkbox"> Replace the `S_ID` of the Google Sheet connected to the form from the address bar between `/d/` and `/edit`.
+<br>
+<input type="checkbox"> From the step 2.6 we may get the total number of time slots (don't forget to subtract the number of deleted time slots). You may change the second number of `ALL_DATA_RANGE`, `OCCUPIED_DATA_RANGE` to the total time slots +10. It could potentially help with speed, might not, don't really know. Just make sure that the second number is not below the number of total slots (e.g. the second numbers is 300 by default if you don't change it, so if you have 360 time slots total, then that is a problem).
+<br>
+<input type="checkbox"> You may change the content of `FORM_CLOSE_MESSAGE`, but it's mostly okay as it is.
+<textarea cols="143" rows="6" style="resize:none;">/*#### Singing Valentines Booking Form ####
+*
+* Used on a multiple choice item in Google Forms, this can update the available slots
+* after each booking.
+*
+* Requires: A Google Sheet created through a Google Form.
+*
+*/
+
+//#### GLOBALS ####
+var FORM_ID = "F_ID";//Add your form ID (from the address bar)
+var SS_ID = "S_ID"; //Add your Spreadsheet ID (from the address bar)
+var SHEET_NAME = "For code"; //Add your Sheet tab name
+
+// Find the multiple choice question with the groups and times
+//         The ID will probably be displayed as something like "1.105161295E9"
+// it does not matter if it is as that, or a plain number like "1105161295"
+var SESSION_ITEM_ID = 1; //Use findItemId function in Get_session_item_id.gs
+
+// set the "A2:A###" number as the number of total slots+1 (NUMBER_OF_SLOTS_PER_GROUP*NUMBER_OF_GROUPS)
+var ALL_DATA_RANGE = "A2:A300"; //Add the range of booking items your selected sheet tab
+var OCCUPIED_DATA_RANGE = "B2:B300"; //Add the range of booking items your selected sheet tab
+
+
+// The message the form displays when the form is automatically closed
+// Could be used to promote the Valentines concert or social media
+var FORM_CLOSE_MESSAGE = `Registration is now closed.
+Thank you for your interest in Singing Valentines and we wish you love!
+
+Тіркеу аяқталды.
+Музыкалық Ғашықхаттаррға көңіл бөлгеніңізге рақмет, сізге махаббат тілейміз!
+
+Регистрация окончена.
+Спасибо за ваш интерес в Поющих Валентинках, желаем вам любви!`;
+
+/* ###################################################################
+* Seat booking function
+*
+* Requires: Set trigger Edit>Current project's triggers > select onSubmit
+*
+* After the form is submitted, it checks the information from the
+* slots and then updates the form with the remaining slots.
+* If a slot is chosen, that slot is removed.
+* If all slots are taken for all groups, the form is closed.
+*/
+
+function onFormSubmit() {
+  var allSlots = SpreadsheetApp
+                        .openById(SS_ID)
+                        .getSheetByName(SHEET_NAME)
+                        .getRange(OCCUPIED_DATA_RANGE)
+                        .getValues();
+  allSlots = Object.keys(allSlots[0]).map(function (c) { return allSlots.map(function (r) { return r[c]; }); });
+  var allOccupiedSlots = SpreadsheetApp
+                        .openById(SS_ID)
+                        .getSheetByName(SHEET_NAME)
+                        .getRange(OCCUPIED_DATA_RANGE)
+                        .getValues();
+  allOccupiedSlots = Object.keys(allOccupiedSlots[0]).map(function (c) { return allOccupiedSlots.map(function (r) { return r[c]; }); });
+ 
+  var form = FormApp.openById(FORM_ID);
+  
+  //Filter item data by availability
+  var remainingSlots = allSlots.filter(function(item){
+    return allOccupiedSlots[0].indexOf(item.getValue()) == -1;
+  });
+  
+  if(remainingSlots.length == 0){
+    // Close the form.
+    form.setAcceptingResponses(false);
+    form.setCustomClosedFormMessage(FORM_CLOSE_MESSAGE);
+    
+  }else{
+    form.getItemById(SESSION_ITEM_ID).asMultipleChoiceItem().setChoices(remainingSlots);
+  }
+};
+
+/* ###################################################################
+* Form opening function
+*
+* Requires: Set trigger Edit>Current project's triggers > select time-driven > specific date and time
+*
+* At the specified time it opens the form
+*/
+function openFormAtTime() {
+  var form = FormApp.openById(FORM_ID);
+  form.setAcceptingResponses(true);
+}
+function closeFormAtTime() {
+  var form = FormApp.openById(FORM_ID);
+  form.setAcceptingResponses(false);
+  form.setCustomClosedFormMessage(FORM_CLOSE_MESSAGE);
+}</textarea>
+<input type="checkbox"> Copy the box above (Click, `Ctrl + A`, `Ctrl + C`), paste and replace the contents of `Code.gs`, save by pressing `Ctrl + S`.
+<br>
+<input type="checkbox"> Copy the box below (Click, `Ctrl + A`, `Ctrl + C`)
+<textarea cols="143" rows="6" style="resize:none;">/* ###################################################################
+* Helper function used to find the Item ID that you wish to apply
+* the seat booking code to.
+* It logs the item ID and it's title.
+*
+* NOTE!!! Make sure you update FORM_ID in your Code.gs page.
+*/
+ 
+function findItemID(){
+  var form = FormApp.openById(FORM_ID);
+  var items = form.getItems()
+  
+  var item_list = items.map(function(item){
+    Logger.log(item.getTitle());
+    Logger.log(item.getId());
+  });
+};</textarea>
+<input type="checkbox"> ITEM_ID
+
 ## **5. Notes about the booking form**
-ggg
-<br>
-<br>
+- ggg
+- don't change anything other than the 'Forms Response 1'. you could delete rows from it, and the form replenishes itself
+- monitor the google forms once a couple hours after the beginning of booking just in case, who knows
+- look at the `Group #` sheets too, people could have not selected a song from the group whose slot they selected
+- contact the people through the contact information after the form close deadline (either the people in charge of those particular valentines cards, or 1 LT per group, or something else, your decision)
 
 <script>
     function generateSlots() {
