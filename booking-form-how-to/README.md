@@ -9,9 +9,11 @@
 | [5. Notes about the booking form](#5-notes-about-the-booking-form) |
 
 ## **1. Create the Google Form**
+Throughout this guide please use the University email address (if NU still uses Gmail, if not you probably wan't to make a choir gmail account for the club).
+<br>
 <input type="checkbox"> 1. Go to [Google Forms](https://docs.google.com/forms/) and search for
 <br>
-`Singing Valentines by NU Choir Template`
+[`Singing Valentines by NU Choir Template`](https://docs.google.com/forms/d/1Yh6G0IX_rCGyJW4jlSNuaHqBYvW5b-uCTRJRw7KF1Us/edit)
 <br>
 <br>
 <input type="checkbox"> 2. Open it and click `Make a copy`:
@@ -114,7 +116,6 @@ Group 3 🌸
 Group 4 💘
 ♥️   Song - Artist
 ♥️   or a break up song ❌:  Song - Artist</textarea>
-<br>
 
 ![not accepting responses message](../assets/step_1_8_2.jpg "Not accepting responses message")
 
@@ -145,7 +146,6 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 <br>
 <textarea cols="143" rows="2" style="resize:none;">Receiver	Photo	Sender	Message	Time	Location	Contacts	Song
 =SORT(IFERROR(FILTER(CHOOSECOLS('Form Responses 1'!C$2:M,1,2,3,4,5,6,7,8), REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group 1.*") =TRUE)),6,True)</textarea>
-<br>
 
 ![style the headers](../assets/step_2_4.gif "Style the headers")
 <br>
@@ -168,6 +168,7 @@ Note: if you are reordering the columns for your convenience (but still keeping 
 <textarea cols="143" rows="2" style="resize:none;">All slots	Occupied slots	Unique occupied slots		Total	Unique
 	=IFERROR(FILTER('Form Responses 1'!G$2:G, REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group.*") =TRUE))	=UNIQUE('Form Responses 1'!G2:G)		=COUNTA(B2:B)	=COUNTA(C2:C)
 				=IF(E2=F2,"No duplicates","Duplicates! Find 'em!")	</textarea>
+
 <input type="checkbox"> Choose the `E2` cell, go to `Format` -> `Conditional formatting`. Set it to turn green when `Text is exactly` is `No duplicates`, and to turn red when `Text is exactly` is `Duplicates!`.
 <br>
 
@@ -189,7 +190,7 @@ Quick manual check if the conditions work:
 ![check conditions in code sheet](../assets/step_2_5_3.gif "Check conditions in code sheet")
 <br>
 <br>
-If there is EVER two or more people who book the exact same slot at the exact same time, there WILL be a duplicate. If that happens, you will get an email about it (within 30 minutes allegedly, from my testing it's somewhat unreliable, so check the `For code` sheet regularly until all the time slots are gone), or you can see it colored in red immediately on the `For code` sheet of this Google Sheet (you can scroll through the time slots and see which time slot is problematic, and notify the person who was slightly later that their order is canceled ASAP, or maybe perform for them all by cascading the time slightly for both xD however you decide to handle it).
+If there is EVER two or more people who book the exact same slot in a window of a couple seconds or so, there WILL be a duplicate. If that happens, you will get an email about it (within 30 minutes allegedly, from my testing it's somewhat unreliable, so check the `For code` sheet regularly until all the time slots are gone), or you can see it colored in red immediately on the `For code` sheet of this Google Sheet (you can scroll through the time slots and see which time slot is problematic, and notify the person who was slightly later that their order is canceled ASAP, or maybe perform for them all by cascading the time slightly for both xD however you decide to handle it).
 <br>
 <br>
 <input type="checkbox"> 6. Generate the time slots for the groups. Below are the values you can change, the start time, end time, the interval between performances, and the comma separated list of the groups' distinct individual emojis (that's how the algorithm gets the number of groups too).
@@ -210,10 +211,11 @@ If there is EVER two or more people who book the exact same slot at the exact sa
 <button onclick="generateSlots()">Generate Schedule</button>
 <br>
 <textarea id="output" cols="143" rows="10" style="resize:none;"></textarea>
+
 There are <span id="total">0</span>(minus the number of time slots you delete) time slots total! This is important for later.
 <br>
 <br>
-<input type="checkbox"> Delete all the time slots you don't want (e.g. not enough performers, no guitarists, lunch break for the whole group etc.). Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to `A2` of the `For code` sheet.
+<input type="checkbox"> Delete all the time slots you don't want (e.g. not enough performers, no guitarists, lunch break for the whole group etc.). Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to `A2` cell of the `For code` sheet.
 <br>
 <br>
 <input type="checkbox"> Go to the form in the "Time and Group" question, click on the only option in that question so that it is all "blue" from being selected and paste the just copied time slots from the box above again.
@@ -229,6 +231,7 @@ So that non-LT members don't get access to people's real email addresses (other 
 <button onclick="generateCipher()">Generate Cipher</button>
 <br>
 <textarea id="cipher" cols="143" rows="1" style="resize:none;"></textarea>
+
 <input type="checkbox"> Copy the cipher above and change the name of the `Form Responses 1`. Change both references in each `Group #` sheet formula from `Form Responses 1` to that cipher. Change all the `Form Responses 1` references in both formulas in `For code` sheet to that cipher.
 <br>
 <br>
@@ -241,6 +244,7 @@ So that non-LT members don't get access to people's real email addresses (other 
 <input type="checkbox"> 4. Copy the link of the original Google Sheet (only up to `/edit`). Paste it instead of `spreadsheet_url` in the box below, keep the `""`.
 <br>
 <textarea cols="143" rows="1" style="resize:none;">=IMPORTRANGE("spreadsheet_url", "Group 1!A1:H")</textarea>
+
 <input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number. You have to `Allow access` for the first time, for the Google Sheet to be able to get info from the original Google Sheet.
 <br>
 <br>
@@ -261,13 +265,21 @@ So that non-LT members don't get access to people's real email addresses (other 
 <br>
 2. Change the following in the box below.
 <br>
-<input type="checkbox"> Replace the `F_ID` of the Google Form from the address bar between `/d/` and `/edit`.
+<input type="checkbox"> Replace the `F_ID` with the ID of the Google Form from the address bar between `/d/` and `/edit`.
 <br>
-<input type="checkbox"> Replace the `S_ID` of the Google Sheet connected to the form from the address bar between `/d/` and `/edit`.
+
+![get the form id](../assets/step_4_2.jpg "Get the Form ID")
 <br>
-<input type="checkbox"> From the step 2.6 we may get the total number of time slots (don't forget to subtract the number of deleted time slots). You may change the second number of `ALL_DATA_RANGE`, `OCCUPIED_DATA_RANGE` to the total time slots +10. It could potentially help with speed, might not, don't really know. Just make sure that the second number is not below the number of total slots (e.g. the second numbers is 300 by default if you don't change it, so if you have 360 time slots total, then that is a problem).
 <br>
-<input type="checkbox"> You may change the content of `FORM_CLOSE_MESSAGE`, but it's mostly okay as it is.
+<input type="checkbox"> Replace the `S_ID` with the ID of the Google Sheet connected to the form from the address bar between `/d/` and `/edit`.
+<br>
+
+![get the sheet id](../assets/step_4_2_2.jpg "Get the Sheet ID")
+<br>
+<br>
+<input type="checkbox"> From the step 2.6 we may get the total number of time slots (don't forget to subtract the number of deleted time slots). You may change the second number of `ALL_DATA_RANGE`, `OCCUPIED_DATA_RANGE` to the total time slots +10. It could potentially help with speed, might not, don't really know. Just make sure that the second number is not below the number of total slots (e.g. if you have 360 time slots total, you would need `ALL_DATA_RANGE = "A2:A361"` and `OCCUPIED_DATA_RANGE = "B2:B361"` at minimum).
+<br>
+<input type="checkbox"> You may change the content of `FORM_CLOSE_MESSAGE` to change the location and time of the concert that is promoted, or to delete that line if you are not doing a concert this year.
 <textarea cols="143" rows="6" style="resize:none;">/*#### Singing Valentines Booking Form ####
 *
 * Used on a multiple choice item in Google Forms, this can update the available slots
@@ -278,7 +290,7 @@ So that non-LT members don't get access to people's real email addresses (other 
 */
 
 //#### GLOBALS ####
-var FORM_ID = "F_ID";//Add your form ID (from the address bar)
+var FORM_ID = "F_ID";//Add your Form ID (from the address bar)
 var SS_ID = "S_ID"; //Add your Spreadsheet ID (from the address bar)
 var SHEET_NAME = "For code"; //Add your Sheet tab name
 
@@ -295,13 +307,16 @@ var OCCUPIED_DATA_RANGE = "B2:B300"; //Add the range of booking items your selec
 // The message the form displays when the form is automatically closed
 // Could be used to promote the Valentines concert or social media
 var FORM_CLOSE_MESSAGE = `Registration is now closed.
-Thank you for your interest in Singing Valentines and we wish you love!
+Thank you for your interest in Singing Valentines!
+But you can still listen to all of the Singing Valentines and more on the concert February 14th in the Daily Cup area!
 
 Тіркеу аяқталды.
-Музыкалық Ғашықхаттаррға көңіл бөлгеніңізге рақмет, сізге махаббат тілейміз!
+Музыкалық Ғашықхаттаррға көңіл бөлгеніңізге рақмет!
+Бірақ сіз Музыкалық Ғашықхаттарды түгелдей 14 Ақпан күні 19:00де Daily Cup маңайында тыңдай аласыз!
 
 Регистрация окончена.
-Спасибо за ваш интерес в Поющих Валентинках, желаем вам любви!`;
+Спасибо за ваш интерес в Поющих Валентинках!
+Но вы всё еще можете послушать все Поющие Валентинки и больше на концерте 14ого Февраля в 19:00 в районе Daily Cup!`;
 
 /* ###################################################################
 * Seat booking function
@@ -318,21 +333,22 @@ function onFormSubmit() {
   var allSlots = SpreadsheetApp
                         .openById(SS_ID)
                         .getSheetByName(SHEET_NAME)
-                        .getRange(OCCUPIED_DATA_RANGE)
+                        .getRange(ALL_DATA_RANGE)
                         .getValues();
-  allSlots = Object.keys(allSlots[0]).map(function (c) { return allSlots.map(function (r) { return r[c]; }); });
-  var allOccupiedSlots = SpreadsheetApp
+  allSlots = Object.keys(allSlots[0]).map(function (c) { return allSlots.map(function (r) { return r[c]; }).filter(function(i){ return i != ""; }); })[0];
+  var occSlots = SpreadsheetApp
                         .openById(SS_ID)
                         .getSheetByName(SHEET_NAME)
                         .getRange(OCCUPIED_DATA_RANGE)
                         .getValues();
-  allOccupiedSlots = Object.keys(allOccupiedSlots[0]).map(function (c) { return allOccupiedSlots.map(function (r) { return r[c]; }); });
+  occSlots = Object.keys(occSlots[0]).map(function (c) { return occSlots.map(function (r) { return r[c]; }).filter(function(i){ return i != ""; }); })[0];
  
   var form = FormApp.openById(FORM_ID);
+  var session_id = form.getItemById(SESSION_ITEM_ID).asMultipleChoiceItem();
   
   //Filter item data by availability
   var remainingSlots = allSlots.filter(function(item){
-    return allOccupiedSlots[0].indexOf(item.getValue()) == -1;
+    return occSlots.indexOf(item) == -1;
   });
   
   if(remainingSlots.length == 0){
@@ -341,7 +357,7 @@ function onFormSubmit() {
     form.setCustomClosedFormMessage(FORM_CLOSE_MESSAGE);
     
   }else{
-    form.getItemById(SESSION_ITEM_ID).asMultipleChoiceItem().setChoices(remainingSlots);
+    session_id.setChoices(remainingSlots.map(function (c) {return session_id.createChoice(c)}));
   }
 };
 
@@ -361,9 +377,10 @@ function closeFormAtTime() {
   form.setAcceptingResponses(false);
   form.setCustomClosedFormMessage(FORM_CLOSE_MESSAGE);
 }</textarea>
-<input type="checkbox"> Copy the box above (Click, `Ctrl + A`, `Ctrl + C`), paste and replace the contents of `Code.gs`, save by pressing `Ctrl + S`.
+
+<input type="checkbox"> Copy the box above (Click, `Ctrl + A`, `Ctrl + C`), paste and replace the contents of `Code.gs`, save the file by pressing `Ctrl + S`.
 <br>
-<input type="checkbox"> Copy the box below (Click, `Ctrl + A`, `Ctrl + C`)
+<input type="checkbox"> Copy the box below (Click, `Ctrl + A`, `Ctrl + C`), click on the **`+`** in the upper left part of the page, choose `Script`, name the file `Get_session_item_id.gs`, paste and replace the contents of the new file, save the file by pressing `Ctrl + S`, click on the `Run` button at the top, click `Review permissions`, and allow the code all permissions that it is asking for (in case you are worried, the code is literally yours no one would take advantage of the permissions xD).
 <textarea cols="143" rows="6" style="resize:none;">/* ###################################################################
 * Helper function used to find the Item ID that you wish to apply
 * the seat booking code to.
@@ -381,14 +398,39 @@ function findItemID(){
     Logger.log(item.getId());
   });
 };</textarea>
-<input type="checkbox"> ITEM_ID
 
-## **5. Notes about the booking form**
-- ggg
-- don't change anything other than the 'Forms Response 1'. you could delete rows from it, and the form replenishes itself
-- monitor the google forms once a couple hours after the beginning of booking just in case, who knows
-- look at the `Group #` sheets too, people could have not selected a song from the group whose slot they selected
-- contact the people through the contact information after the form close deadline (either the people in charge of those particular valentines cards, or 1 LT per group, or something else, your decision)
+![create Get_session_item_id.gs](../assets/step_4_2_3.gif "Create Get_session_item_id.gs")
+<br>
+<br>
+<input type="checkbox"> Scroll through the `Execution logs` and find the "Time and Group" question and copy the number right under that question in the `Execution logs`. Go to `Code.gs` and replace the `1` in SESSION_ITEM_ID with the copied number, then replace the scientific notation with a regular number (e.g. 2.051039813E9 -> delete the "." and "E9" -> 2051039813. However be careful that there may be 0-s at the end of the number so it could look like: 2.51E3 -> 2510, so check if the amount of numbers after "." matches the number after "E"!), save the file with `Ctrl + S`.
+<br>
+
+![set the item id](../assets/step_4_2_4.gif "Set the Item ID")
+<br>
+<br>
+<input type="checkbox"> 3. On the left side of the page go to the `Triggers` tab (4th from the top), click on `+ Add Trigger` in the bottom right side of the page. Choose `Choose which function to run`: `onFormSubmit`, choose `Select event source`: `From spreadsheet`, choose `Select event type`: `On form submit`, choose `Failure notification settings`: `Notify me immediately` (so that you are notified of the errors by email, if they ever arise), and click on `Save`. Click on `+ Add Trigger`, choose the same options except for `Select event type`: `On edit`, and save the trigger (this is for when you delete cancelled orders from the spreadsheet).
+<br>
+
+![set up onformsubmit triggers](../assets/step_4_3.gif "set up onFormSubmit triggers")
+<br>
+<br>
+<input type="checkbox"> Click on `+ Add Trigger`, choose `Choose which function to run`: `openFormAtTime`, choose `Select event source`: `Time-driven`, choose `Select type of time based trigger`: `Specific date and time`, make sure that the time zone in the lower box is correct (if it isn't you could either just account for the difference in time, or change the time zone in the `Project Settings` to your needed time zone) then set the time when the form is supposed to open (*you could also use this opportunity to double-check if the trigger works, set it to a couple minutes from now and see if the form opens or not*), and click on `Save`. Click on `+ Add Trigger`, choose the same options except for `Choose which function to run`: `closeFormAtTime`, then set the time when the form is supposed to close and save the trigger (this is for when the time slots don't run out until the deadline. it *never* happens but better be safe, than having to go and manually close it).
+<br>
+
+![set up time driven triggers](../assets/step_4_3_2.gif "Set up time driven triggers")
+<br>
+<br>
+Congratulations! This is everything you need for the booking form to work. You could additionally check out how it works ahead of time (e.g. try to do a regular booking; try to double book by choosing the time slot option on two accounts simultaneously and then either having a small delay between them, or sending both forms almost simultaneously), if you decide to do testing don't forget to delete all the rows of the testing data in `'Forms Response 1'`.
+<br>
+<input type="checkbox" style="width:30px;height:30px;"> After you are done you can go to the Google Form, click on `Published`, make sure that accepting responses is OFF, make sure that the message on the screen is correct (it may look weird in the window, but if the version you copy pasted is normal, then it will turn out okay when you see it on the "closed form page" itself), verify that you chose who you wanted to choose in the `Responders` section (NU/Everyone with the link), copy the `Responder's link` (USE THIS LINK, not the link in the address bar, they lead to different pages), and save!
+
+## **5. Notes About the Booking Form and the Valentine's in General**
+- DO NOT change anything other than the `'Forms Response 1'` if you want to edit details (but if you want to delete available time slots you may delete from the first column in `'For code'`). You could delete rows from it (and the form replenishes the time slots automatically), edit contact info, location, name and anything else (other than the "Time and Group" question cells, do not edit those! if you want to make changes to the time just write the notes in the 9th column of the `'Group #'` sheets for choir members) upon a request from the users.
+- Monitor the google forms once a couple hours after the beginning of booking just in case there are duplicates, check the `'For code'` sheet for that.
+- Occasionnaly check the `'Group #'` sheets too, people could have not selected a song from the group whose slot they selected. Just email the respondent and copy and paste what they chose on the `'Forms Response 1'` sheet.
+- After the form close deadline, or whenever all the slots are booked and you have time, contact the people through the contact information to confirm the order (either the choir members who are in charge of those particular valentine deliveries (at those specific times), or 1 LT per group, or something else, your decision). This way users have a quick and reliable way to contact us, and we know if an order is canceled ahead of time (so that someone can rebook it, or so that choir members can relax in those time slots).
+- During the Valentine's Day, there should be at least one person per group in each time slot that is marking delivered valentines by painting them on their spreadsheets, letting joining group members know the group's location and direction so that they can find each other.
+- Try to give each group a distinct style so that members can see each other from a km away xD. Also gives listeners joy! You could think of all kinds of gimmicks.
 
 <script>
     function generateSlots() {
