@@ -11,9 +11,9 @@
 ## **1. Create the Google Form**
 Throughout this guide please use the University email address (if NU still uses Gmail, if not you probably wan't to make a choir gmail account for the club).
 <br>
-<input type="checkbox"> 1. Go to [Google Forms](https://docs.google.com/forms/) and search for
+<input type="checkbox"> 1. Go to <a href="https://docs.google.com/forms/" target="_blank">Google Forms</a> and search for
 <br>
-[`Singing Valentines by NU Choir Template`](https://docs.google.com/forms/d/1Yh6G0IX_rCGyJW4jlSNuaHqBYvW5b-uCTRJRw7KF1Us/edit)
+<a href="https://docs.google.com/forms/d/1Yh6G0IX_rCGyJW4jlSNuaHqBYvW5b-uCTRJRw7KF1Us/edit" target="_blank">`Singing Valentines by NU Choir Template`</a>[]()
 <br>
 <br>
 <input type="checkbox"> 2. Open it and click `Make a copy`:
@@ -160,7 +160,7 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 ![change the formulas](../assets/step_2_4_2.gif "Change the formulas")
 <br>
 <br>
-Note: if you are reordering the columns for your convenience (but still keeping the "Group song" questions last), you may adapt all the formulas to your self by changing both `G`-s in `'Form Responses 1'!$G$2:$G` to the letter of the "Time and Group" column as it is in `Forms Responses 1`, and changing the `6` in `=TRUE)),6,True)` to the numbered order of that same "Time and Group" column (if you are counting on `Forms Responses 1`, subtract 2 from the number you get).
+*Note: if you are reordering the columns for your convenience (but still keeping the "Group song" questions last), you may adapt all the formulas to your self by changing both `G`-s in `'Form Responses 1'!$G$2:$G` to the letter of the "Time and Group" column as it is in `Forms Responses 1`, and changing the `6` in `=TRUE)),6,True)` to the numbered order of that same "Time and Group" column (if you are counting on `Forms Responses 1`, subtract 2 from the number you get).*
 <br>
 <br>
 <input type="checkbox"> 5. Copy everything from the box below (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of the `For code` sheet.
@@ -168,7 +168,9 @@ Note: if you are reordering the columns for your convenience (but still keeping 
 <textarea cols="143" rows="2" style="resize:none;">All slots	Occupied slots	Unique occupied slots		Total	Unique
 	=IFERROR(FILTER('Form Responses 1'!G$2:G, REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group.*") =TRUE))	=UNIQUE('Form Responses 1'!G2:G)		=COUNTA(B2:B)	=COUNTA(C2:C)
 				=IF(E2=F2,"No duplicates","Duplicates! Find 'em!")	</textarea>
-
+*Note: Once again, if you changed the position of the "Time and Group" column, change the G letters in the formulas to the new letter of the "Time and Group" column as it is in `Forms Responses 1`*
+<br>
+<br>
 <input type="checkbox"> Choose the `E2` cell, go to `Format` -> `Conditional formatting`. Set it to turn green when `Text is exactly` is `No duplicates`, and to turn red when `Text is exactly` is `Duplicates!`.
 <br>
 
@@ -224,7 +226,7 @@ There are <span id="total">0</span>(minus the number of time slots you delete) t
 ![copy the time slots to the form](../assets/step_2_6.gif "Copy the time slots to the form")
 
 ## **3. _(optional, but very recommended)_ Create a Separate Google Sheet for the Members (for Respondent Privacy)**
-So that non-LT members don't get access to people's real email addresses (other than the contact info users wrote, unless you want to keep that info LT-only as well).
+So that non-LT members (or even people not from the club somehow) don't get access to people's real email addresses (other than the contact info users wrote, unless you want to keep that info LT-only as well).
 <br>
 <input type="checkbox"> 1. Click on the `Generate Cipher` below.
 <br>
@@ -248,7 +250,7 @@ So that non-LT members don't get access to people's real email addresses (other 
 <input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number. You have to `Allow access` for the first time, for the Google Sheet to be able to get info from the original Google Sheet.
 <br>
 <br>
-<input type="checkbox"> 5. Choose the `Receiver`, `Sender`, `Message`, `Location`, `Contacts` columns, and set `Text wrapping` to `Wrap`. You could also choose the `Time` column right click it, click `Resize`, and set it to 40 (this would only show the time itself, more convenient).
+<input type="checkbox"> 5. Choose the `Receiver`, `Sender`, `Message`, `Location`, `Contacts` columns, and set `Text wrapping` to `Wrap` (so that the members would see all the information without it clipping out of view). You could also choose the `Time` column right click it, click `Resize`, and set it to 40 (this would only show the time itself, more convenient).
 <br>
 
 ![stylize the new google sheet](../assets/step_3_5.jpg "Stylize the new Google Sheet")
@@ -263,7 +265,7 @@ So that non-LT members don't get access to people's real email addresses (other 
 ![link the apps script](../assets/step_4_1.jpg "Link the Apps Script")
 <br>
 <br>
-2. Change the following in the box below.
+2 . Change the following in the box below.
 <br>
 <input type="checkbox"> Replace the `F_ID` with the ID of the Google Form from the address bar between `/d/` and `/edit`.
 <br>
@@ -277,7 +279,7 @@ So that non-LT members don't get access to people's real email addresses (other 
 ![get the sheet id](../assets/step_4_2_2.jpg "Get the Sheet ID")
 <br>
 <br>
-<input type="checkbox"> From the step 2.6 we may get the total number of time slots (don't forget to subtract the number of deleted time slots). You may change the second number of `ALL_DATA_RANGE`, `OCCUPIED_DATA_RANGE` to the total time slots +10. It could potentially help with speed, might not, don't really know. Just make sure that the second number is not below the number of total slots (e.g. if you have 360 time slots total, you would need `ALL_DATA_RANGE = "A2:A361"` and `OCCUPIED_DATA_RANGE = "B2:B361"` at minimum).
+<input type="checkbox"> From the [step 2.6](#total) we may get the total number of time slots (don't forget to subtract the number of deleted time slots). You may change the second number of `ALL_DATA_RANGE`, `OCCUPIED_DATA_RANGE` to the total time slots +10. It could potentially help with speed, might not, don't really know. Just make sure that the second number is not below the number of total slots (e.g. if you have 360 time slots total, you would need `ALL_DATA_RANGE = "A2:A361"` and `OCCUPIED_DATA_RANGE = "B2:B361"` at minimum).
 <br>
 <input type="checkbox"> You may change the content of `FORM_CLOSE_MESSAGE` to change the location and time of the concert that is promoted, or to delete that line if you are not doing a concert this year.
 <textarea cols="143" rows="6" style="resize:none;">/*#### Singing Valentines Booking Form ####
