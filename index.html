@@ -15,26 +15,29 @@
 
 <body>
     <!-- copied and edited from https://www.geeksforgeeks.org/build-a-drag-drop-kanban-board-using-html-css-javascript/ -->
-     <a href="booking-form-how-to/"><img src="link.jpg" style="width:200px;position:absolute;top:20px;left:50px;" alt="How to make a booking form"></a>
+    <a href="booking-form-how-to/"><img src="link.jpg" style="width:200px;position:absolute;top:20px;left:50px;border: 4px solid #0c1ffb;" alt="How to make a booking form"></a>
     <div class="head">
         <img src="logo_val.png">
         <h1>Valentine's Day Groups Divisor</h1>
         <div style="margin-bottom:5px;">
-            <h3 style="width: 100%;text-align:center;margin:0;cursor:pointer;" onclick=showHideHow(this)>▶ How to use this site?</h3>
-            <p id="how" style="width:60%;text-align:center;font-size:12px;display:none;margin:0;">
-                (1) Specify the number of groups, and<br>
-                (2) Upload a CSV file created from a Google Sheets (File -> Download -> Comma Separated Values (.csv)) from a Google Form (<em>search the "NU Choir Valentines 2025 Member's Availability" form on the account, you may just import the questions from there and manually copy the settings from it</em>) that has "," commas as separators, and the following columns in that order (the question names don't matter. collect the emails through the Google Form setting, not a question):<br>
-                <span style="font-size:10px;">Timestamp (doesn't matter what it has), Email (has to be the university email), Name (doesn't matter for this site, but collect them anyway), Which part the person is singing (Multiple choice question), Is the person able to play guitar (ONLY yes or no), any number of time slot questions (ONLY yes or no. recommended to ask in 30 min windows from 09AM until 05PM).</span><br>
-                (2.1) OR upload a CSV file already saved from this website.
-            </p>
-            <h3 style="width: 100%;text-align:center;margin:0;cursor:pointer;" onclick=showHideWhat(this)>▶ What can this site do?</h3>
-            <p id="what" style="width:60%;text-align:center;font-size:12px;display:none;margin:0;">
-                You may drag and drop people from one group to another and Swap full groups of a part. Purple means the time slot has a guitar player, Red means that the time slot does not have ANY people from the particular part in that group.<br>
-                There is a handy summary table at the end (for easier checking of guitar availability and or if there are no people from a particular part in their group at a particular time).<br>
-                Try to have the number of people in a part as evenly distributed across groups in each time slot as possible, while keeping the total number of people from each part in groups even as well.<br>
-                This website doesn't account for having at least 1 LT member in each group, but you can just do it manually.<br>
-                Give it some time and enjoy! Good luck!
-            </p>
+            <h3 onclick=showHideHow(this)>▲ How to use this site?</h3>
+            <ol id="how" style="width:60%;font-size:12px;display:none;margin:0;">
+                <li>1. Specify the number of groups, and</li>
+                <ol style="margin:0;padding: 0;">
+                    <li>2.1. Upload a CSV file created from a Google Sheets (File -> Download -> Comma Separated Values (.csv)) from a Google Form (<em>search the "NU Choir Valentines 2025 Member's Availability" form on the account, you may just import the questions from there and manually copy the settings from it</em>) that has "," commas as separators, and the following columns in that order (the question names don't matter. collect the emails through the Google Form setting, not a question):<br>
+                    <span style="font-size:10px;">Timestamp (doesn't matter what it has), Email (has to be the university email), Name (doesn't matter for this site, but collect them anyway), Which part the person is singing (Multiple choice question), Is the person able to play guitar (ONLY yes or no), any number of time slot questions (ONLY yes or no. recommended to ask in 30 min windows from 09AM until 05PM).</span></li>
+                    <li>2.2. OR upload a CSV file already saved from this website.</li>
+                </ol>
+            </ol>
+            <h3 onclick=showHideWhat(this)>▲ What can this site do?</h3>
+            <ul id="what" style="width:60%;font-size:12px;display:none;margin:0;">
+                <li>You may drag and drop people from one group to another and Swap full groups of a part.</li>
+                <li>Purple means the time slot has a guitar player, Red means that the time slot does not have ANY people from the particular part in that group.</li>
+                <li>There is a handy summary table at the end (for easier checking of guitar availability and or if there are no people from a particular part in their group at a particular time).</li>
+                <li>Try to have the number of people in a part as evenly distributed across groups in each time slot as possible, while keeping the total number of people from each part in groups even as well.</li>
+                <li>This website doesn't account for having at least 1 LT member in each group, but you can just do it manually.</li>
+                <li>Give it some time and enjoy! Good luck!</li>
+            </ul>
         </div>
         <div>
             Number of groups: <input type="number" name="num-of-groups" id="num-of-groups" min="1" step="1" value="3">

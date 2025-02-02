@@ -13,7 +13,7 @@ function showHideHow(h) {
     }
     else {
         el.style.display = "none";
-        h.innerHTML = "▶ How to use this site?";
+        h.innerHTML = "▲ How to use this site?";
     }
 }
 
@@ -25,7 +25,7 @@ function showHideWhat(h) {
     }
     else {
         el.style.display = "none";
-        h.innerHTML = "▶ What can this site do?";
+        h.innerHTML = "▲ What can this site do?";
     }
 }
 
@@ -228,7 +228,7 @@ function initUpdate() {
         for (let col = 2; col < data[0].length; col++) {
             let newCell = sumRow.insertCell();
             if (col == 2) newCell.outerHTML = `<th class="col-name" style="width: 3em;">Group</th>`;
-            else if (col == 3) newCell.outerHTML = `<th class="col-name" style="width: 16em;">Total ${parts.join("/")}/Guitar</th>`;
+            else if (col == 3) newCell.outerHTML = `<th class="col-name" style="width: 16em;">Total ${parts.join("|")}|Guitar</th>`;
             else if (col > 3) newCell.outerHTML = `<th class="col-name">${data[0][col]}</th>`;
         }
         let summaryTBody = summaryTable.createTBody();
@@ -341,9 +341,9 @@ function updateSummaryTable() {
             let m = i*(parts.length+1);
             cells[j].innerHTML = "";
             for (let z = 0; z < parts.length+1; z++) {
-                if (z != 0) cells[j].innerHTML += " / ";
+                if (z != 0) cells[j].innerHTML += " | ";
                 cells[j].innerHTML +=
-                    `<span style="font-size:130%;${(array[m+z][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+z][j-1]}</span>`;
+                    `<span class="sum-num" style="${(array[m+z][j-1]==0)?'color:#e04a2c;font-weight:bold;':''}">${array[m+z][j-1]}</span>`;
             }
             if (array[m+3][j-1] > 0 && j != 1) cells[j].classList.add("guitar-available");
         }
