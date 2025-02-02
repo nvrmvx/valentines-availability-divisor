@@ -206,7 +206,7 @@ If there is EVER two or more people who book the exact same slot in a window of 
 <br>
 <label><input type="number" id="end_m" min="0" max="59" value="0"><-End Minute</label>
 <br>
-<label><input type="number" id="interval" min="1" value="15"><-Interval (minutes). Potentially could be 10min (6 per hour), 12min (5 per hour), 15min (4 per hour)</label>
+<label ><input type="number" id="interval" min="1" value="15"><-Interval (minutes). Potentially could be 10min (6 per hour), 12min (5 per hour), 15min (4 per hour)</label>
 <br>
 <label><input type="text" id="groups" value="🌟,💝,🌸,💘"><-Groups (comma-separated emojis)</label>
 <br>
@@ -214,7 +214,7 @@ If there is EVER two or more people who book the exact same slot in a window of 
 <br>
 <textarea id="output" cols="143" rows="10" style="resize:none;"></textarea>
 
-There are <span id="total">0</span>(minus the number of time slots you delete) time slots total! This is important for later.
+There are <code id="total" class="language-plaintext highlighter-rouge" style="color:rgb(255, 0, 0)">0</code>(**minus the number of time slots you delete**) time slots total! This is important for later.
 <br>
 <br>
 <input type="checkbox"> Delete all the time slots you don't want (e.g. not enough performers, no guitarists, lunch break for the whole group etc.). Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to `A2` cell of the `For code` sheet.
