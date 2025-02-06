@@ -488,7 +488,8 @@ function saveToFile() {
     let day = String(now.getDate()).padStart(2, "0");
     let hours = String(now.getHours()).padStart(2, "0");
     let minutes = String(now.getMinutes()).padStart(2, "0");
-    link.download = `valentines-availability-division-${year}-${month}-${day}-${hours}-${minutes}.csv`;
+    let seconds = String(now.getSeconds()).padStart(2, "0");
+    link.download = `val-availability-${year}-${month}-${day}--${hours}-${minutes}-${seconds}.csv`;
     link.click();
     URL.revokeObjectURL(url);
 }
