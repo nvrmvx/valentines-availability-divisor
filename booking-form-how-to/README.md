@@ -9,14 +9,16 @@
 | [5. Notes About the Booking Form and the Valentine's in General](#5-notes-about-the-booking-form-and-the-valentines-in-general) |
 
 ## **1. Create the Google Form**
-Throughout this guide please use the University email address (if NU still uses Gmail, if not you probably wan't to make a choir gmail account for the club).
+Throughout this guide please use the University email address (if NU still uses Gmail, if not you probably want to make a choir gmail account for the club).
+<br>
+You can tick these checkboxes by clicking on them to keep track of what you already did or have yet to do. The checkboxes don't save if you reopen the page so **please do the whole guide in one sitting** (should take about an hour or so).
 <br>
 <input type="checkbox"> 1. Go to <a href="https://docs.google.com/forms/" target="_blank">Google Forms</a> and search for
 <br>
 <a href="https://docs.google.com/forms/d/1Yh6G0IX_rCGyJW4jlSNuaHqBYvW5b-uCTRJRw7KF1Us/edit" target="_blank">`Singing Valentines by NU Choir Template`</a>[]()
 <br>
 <br>
-<input type="checkbox"> 2. Open it and click `Make a copy`:
+<input type="checkbox"> 2. Open it and click `Make a copy` (Please don't change this file, it's for easier copying in future years):
 <br>
 
 ![make a copy button](../assets/step_1_2.jpg "Make a copy button")
@@ -155,6 +157,8 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 (1) "1,2,3,4,5,6,7,<span style="color:#ff0000">8</span>" -> "1,2,3,4,5,6,7,<span style="color:#ff0000">9</span>". Change the last number in this list to one more with each sheet. So it is "<span style="color:#ff0000">9</span>" for `Group 2`, "<span style="color:#ff0000">10</span>" for `Group 3`, and etc.
 <br>
 (2) `".*Group 1.*"` -> `".*Group 2.*"`. Change the number the group number of the sheet you are modifying.
+<br>
+*Note: the gif below has a slightly different formula, don't mind that! Just do the changes from this step*
 <br>
 
 ![change the formulas](../assets/step_2_4_2.gif "Change the formulas")
