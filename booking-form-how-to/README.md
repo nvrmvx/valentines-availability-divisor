@@ -171,7 +171,7 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 <br>
 <textarea cols="143" rows="2" style="resize:none;">All slots	Occupied slots	Unique occupied slots		Total	Unique
 	=IFERROR(FILTER('Form Responses 1'!G:G, REGEXMATCH('Form Responses 1'!G:G,".*Group [0-9]+.*") =TRUE))	=UNIQUE(IFERROR(FILTER('Form Responses 1'!G:G, REGEXMATCH('Form Responses 1'!G:G,".*Group [0-9]+.*") =TRUE)))		=COUNTA(B:B)-1	=COUNTA(C:C)-1
-				=IF(E2=F2,"No duplicates","Duplicates! Find 'em!")	</textarea>
+				=IF(E2=F2,"No duplicates","Duplicates!")	</textarea>
 *Note: Once again, if you changed the position of the "Time and Group" column, change the G letters in the formulas to the new letter of the "Time and Group" column as it is in `Forms Responses 1`*
 <br>
 <br>
