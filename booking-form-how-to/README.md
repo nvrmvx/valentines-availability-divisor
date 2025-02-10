@@ -145,14 +145,14 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 <input type="checkbox"> 4. Copy everything from the box below (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of every of the `Group #` sheets.
 <br>
 <textarea cols="143" rows="2" style="resize:none;">Receiver	Photo	Sender	Message	Time	Location	Contacts	Song
-=SORT(IFERROR(FILTER(CHOOSECOLS('Form Responses 1'!C$2:M,1,2,3,4,5,6,7,8), REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group 1.*") =TRUE)),6,True)</textarea>
+=SORT(IFERROR(FILTER(CHOOSECOLS('Form Responses 1'!C:M,1,2,3,4,5,6,7,8), REGEXMATCH('Form Responses 1'!G:G,".*Group 1.*") =TRUE)),6,True)</textarea>
 
 ![style the headers](../assets/step_2_4.gif "Style the headers")
 <br>
 <br>
-<input type="checkbox"> Modify the formula in A2 on `Group 2` until the last Group you have (if you *somehow* have more than four groups modify the `M` in `'Form Responses 1'!C$2:M` to whatever the very last column letters are in the `Form Responses 1` sheet):
+<input type="checkbox"> Modify the formula in cell A2 on `Group 2` until the last Group you have (if you *somehow* have more than four groups modify the `M` in `'Form Responses 1'!C:M` to whatever the very last column letters are in the `Form Responses 1` sheet):
 <br>
-(1) `1,2,3,4,5,6,7,8` -> `1,2,3,4,5,6,7,9`. Change the last number in this list to one more with each sheet. So it is `9` for `Group 2`, `10` for `Group 3`, and etc.
+(1) "1,2,3,4,5,6,7,<span style="color:#ff0000">8</span>" -> "1,2,3,4,5,6,7,<span style="color:#ff0000">9</span>". Change the last number in this list to one more with each sheet. So it is "<span style="color:#ff0000">9</span>" for `Group 2`, "<span style="color:#ff0000">10</span>" for `Group 3`, and etc.
 <br>
 (2) `".*Group 1.*"` -> `".*Group 2.*"`. Change the number the group number of the sheet you are modifying.
 <br>
@@ -160,13 +160,13 @@ Phew! That's most of what was needed in the form. The rest should be faster xD
 ![change the formulas](../assets/step_2_4_2.gif "Change the formulas")
 <br>
 <br>
-*Note: if you are reordering the columns for your convenience (but still keeping the "Group song" questions last), you may adapt all the formulas to your self by changing both `G`-s in `'Form Responses 1'!$G$2:$G` to the letter of the "Time and Group" column as it is in `Forms Responses 1`, and changing the `6` in `=TRUE)),6,True)` to the numbered order of that same "Time and Group" column (if you are counting on `Forms Responses 1`, subtract 2 from the number you get).*
+*Note: if you are reordering the columns for your convenience (but still keeping the "Group song" questions last), you may adapt all the formulas to your self by changing both `G`-s in `'Form Responses 1'!G:G` to the letter of the "Time and Group" column as it is in `Forms Responses 1`, and changing the `6` in `=TRUE)),6,True)` to the numbered order of that same "Time and Group" column (if you are counting on `Forms Responses 1`, subtract 2 from the number you get).*
 <br>
 <br>
 <input type="checkbox"> 5. Copy everything from the box below (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of the `For code` sheet.
 <br>
 <textarea cols="143" rows="2" style="resize:none;">All slots	Occupied slots	Unique occupied slots		Total	Unique
-	=IFERROR(FILTER('Form Responses 1'!G$2:G, REGEXMATCH('Form Responses 1'!$G$2:$G,".*Group.*") =TRUE))	=UNIQUE('Form Responses 1'!G2:G)		=COUNTA(B2:B)	=COUNTA(C2:C)
+	=IFERROR(FILTER('Form Responses 1'!G:G, REGEXMATCH('Form Responses 1'!G:G,".*Group [0-9]+.*") =TRUE))	=UNIQUE(IFERROR(FILTER('Form Responses 1'!G:G, REGEXMATCH('Form Responses 1'!G:G,".*Group [0-9]+.*") =TRUE)))		=COUNTA(B:B)-1	=COUNTA(C:C)-1
 				=IF(E2=F2,"No duplicates","Duplicates! Find 'em!")	</textarea>
 *Note: Once again, if you changed the position of the "Time and Group" column, change the G letters in the formulas to the new letter of the "Time and Group" column as it is in `Forms Responses 1`*
 <br>
@@ -214,7 +214,7 @@ If there is EVER two or more people who book the exact same slot in a window of 
 <br>
 <textarea id="output" cols="143" rows="10" style="resize:none;"></textarea>
 
-There are <code id="total" class="language-plaintext highlighter-rouge" style="color:rgb(255, 0, 0)">0</code>(**minus the number of time slots you delete**) time slots total! This is important for later.
+There are <code id="total" class="language-plaintext highlighter-rouge" style="color:#ff0000">0</code>(**minus the number of time slots you delete**) time slots total! This is important for later.
 <br>
 <br>
 <input type="checkbox"> Delete all the time slots you don't want (e.g. not enough performers, no guitarists, lunch break for the whole group etc.). Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to `A2` cell of the `For code` sheet.
@@ -245,7 +245,7 @@ So that non-LT members (or even people not from the club somehow) don't get acce
 <br>
 <input type="checkbox"> 4. Copy the link of the original Google Sheet (only up to `/edit`). Paste it instead of `spreadsheet_url` in the box below, keep the `""`.
 <br>
-<textarea cols="143" rows="1" style="resize:none;">=IMPORTRANGE("spreadsheet_url", "Group 1!A1:H")</textarea>
+<textarea cols="143" rows="1" style="resize:none;">=IMPORTRANGE("spreadsheet_url", "Group 1!A:H")</textarea>
 
 <input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number. You have to `Allow access` for the first time, for the Google Sheet to be able to get info from the original Google Sheet.
 <br>
@@ -259,6 +259,8 @@ So that non-LT members (or even people not from the club somehow) don't get acce
 <input type="checkbox"> 6. Click `Share`, let `Nazarbayev University` emails to `Edit` the new Google Sheet. So that members could color finished orders, add more details to the right of the table etc.
 
 ## **4. Create and Set Up the Apps Script for the Google Sheets**
+<code class="language-plaintext highlighter-rouge" style="color:#ff0000">Important!</code> It's easy to make small mistakes in this part, please pay attention and follow the steps!
+<br>
 <input type="checkbox"> 1. Link an Apps Script to the **Google Sheets** (not Google Forms), name it `Singing Valentines by NU Choir YEAR (Code)`.
 <br>
 
@@ -410,13 +412,17 @@ function findItemID(){
 ![set the item id](../assets/step_4_2_4.gif "Set the Item ID")
 <br>
 <br>
-<input type="checkbox"> 3. On the left side of the page go to the `Triggers` tab (4th from the top), click on `+ Add Trigger` in the bottom right side of the page. Choose `Choose which function to run`: `onFormSubmit`, choose `Select event source`: `From spreadsheet`, choose `Select event type`: `On form submit`, choose `Failure notification settings`: `Notify me immediately` (so that you are notified of the errors by email, if they ever arise), and click on `Save`. Click on `+ Add Trigger`, choose the same options except for `Select event type`: `On edit`, and save the trigger (this is for when you delete cancelled orders from the spreadsheet).
+<input type="checkbox"> 3. On the left side of the page go to the `Triggers` tab (4th from the top), click on `+ Add Trigger` in the bottom right side of the page. Choose `Choose which function to run`: `onFormSubmit`, choose `Select event source`: `From spreadsheet`, choose `Select event type`: <code class="language-plaintext highlighter-rouge" style="color:#ff0000">On form submit</code>, choose `Failure notification settings`: `Notify me immediately` (so that you are notified of the errors by email, if they ever arise), and click on `Save`.
+<br>
+<input type="checkbox"> Click on `+ Add Trigger`, choose the same options except for `Select event type`: <code class="language-plaintext highlighter-rouge" style="color:#ff0000">On edit</code>, and save the trigger (this is for when you delete cancelled orders from the spreadsheet).
 <br>
 
 ![set up onformsubmit triggers](../assets/step_4_3.gif "set up onFormSubmit triggers")
 <br>
 <br>
-<input type="checkbox"> Click on `+ Add Trigger`, choose `Choose which function to run`: `openFormAtTime`, choose `Select event source`: `Time-driven`, choose `Select type of time based trigger`: `Specific date and time`, make sure that the time zone in the lower box is correct (if it isn't you could either just account for the difference in time, or change the time zone in the `Project Settings` to your needed time zone) then set the time when the form is supposed to open (*you could also use this opportunity to double-check if the trigger works, set it to a couple minutes from now and see if the form opens or not*), and click on `Save`. Click on `+ Add Trigger`, choose the same options except for `Choose which function to run`: `closeFormAtTime`, then set the time when the form is supposed to close and save the trigger (this is for when the time slots don't run out until the deadline. it *never* happens but better be safe, than having to go and manually close it).
+<input type="checkbox"> Click on `+ Add Trigger`, choose `Choose which function to run`: <code class="language-plaintext highlighter-rouge" style="color:#ff0000">openFormAtTime</code>, choose `Select event source`: `Time-driven`, choose `Select type of time based trigger`: `Specific date and time`, make sure that the time zone in the lower box is correct (if it isn't you could either just account for the difference in time, or change the time zone in the `Project Settings` to your needed time zone) then set the time when the form is supposed to open (*you could also use this opportunity to double-check if the trigger works, set it to a couple minutes from now and see if the form opens or not*), and click on `Save`.
+<br>
+<input type="checkbox"> Click on `+ Add Trigger`, choose the same options except for `Choose which function to run`: <code class="language-plaintext highlighter-rouge" style="color:#ff0000">closeFormAtTime</code>, then set the time when the form is supposed to close and save the trigger (this is for when the time slots don't run out until the deadline. it *never* happens but better be safe, than having to go and manually close it).
 <br>
 
 ![set up time driven triggers](../assets/step_4_3_2.gif "Set up time driven triggers")
@@ -433,6 +439,7 @@ Congratulations! This is everything you need for the booking form to work. You c
 - After the form close deadline, or whenever all the slots are booked and you have time, contact the people through the contact information to confirm the order (either the choir members who are in charge of those particular valentine deliveries (at those specific times), or 1 LT per group, or something else, your decision). This way users have a quick and reliable way to contact us, and we know if an order is canceled ahead of time (so that someone can rebook it, or so that choir members can relax in those time slots).
 - During the Valentine's Day, there should be at least one person per group in each time slot that is marking delivered valentines by painting them on their spreadsheets, letting joining group members know the group's location and direction so that they can find each other.
 - Try to give each group a distinct style so that members can see each other from a km away xD. Also gives listeners joy! You could think of all kinds of gimmicks.
+- Don't forget to send an email to the NU staff (both workers and professors, there should be a mass email somewhere) telling them about the Singing Valentines in advance, they love to order this type of stuff too!
 
 <script>
     function generateSlots() {
