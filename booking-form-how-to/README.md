@@ -230,7 +230,11 @@ There are <code id="total" class="language-plaintext highlighter-rouge" style="c
 ![copy the time slots to the form](../assets/step_2_6.gif "Copy the time slots to the form")
 
 ## **3. _(optional, but very recommended)_ Create a Separate Google Sheet for the Members (for Respondent Privacy)**
-So that non-LT members (or even people not from the club somehow) don't get access to people's real email addresses (other than the contact info users wrote, unless you want to keep that info LT-only as well).
+Instead of doing this step, you can just copy the `Group 1`, `Group 2` ... etc. sheet data from the original Google Sheet to a new Google Sheet after the slots are all booked, and that basically accomplishes the same thing. Then you can just edit the new Google Sheet directly instead.
+<br>
+**HOWEVER**, do check out this segment from [step 5](#stylizing). There are semi-useful stylizing tips for the resulting Google Sheet.
+<br>
+This is so that non-LT members (or even people not from the club somehow) **don't get access** to people's real email addresses (other than the contact info users wrote, unless you want to keep that info LT-only as well).
 <br>
 <input type="checkbox"> 1. Click on the `Generate Cipher` below.
 <br>
@@ -254,7 +258,7 @@ So that non-LT members (or even people not from the club somehow) don't get acce
 <input type="checkbox"> Copy everything from the box above (again, to not miss some part of the formula, you could just click inside the box, `Ctrl + A`, `Ctrl + C`) and paste it to the first cell of each `Group #` of the new sheet, while changing the `"Group 1!A1:H"` to the appropriate group number. You have to `Allow access` for the first time, for the Google Sheet to be able to get info from the original Google Sheet.
 <br>
 <br>
-<input type="checkbox"> 5. Choose the `Receiver`, `Sender`, `Message`, `Location`, `Contacts` columns, and set `Text wrapping` to `Wrap` (so that the members would see all the information without it clipping out of view). You could also choose the `Time` column right click it, click `Resize`, and set it to 40 (this would only show the time itself, more convenient).
+<input type="checkbox" id="stylizing"> 5. Choose the `Receiver`, `Sender`, `Message`, `Location`, `Contacts` columns, and set `Text wrapping` to `Wrap` (so that the members would see all the information without it clipping out of view). You could also choose the `Time` column right click it, click `Resize`, and set it to 40 (this would only show the time itself, more convenient).
 <br>
 
 ![stylize the new google sheet](../assets/step_3_5.jpg "Stylize the new Google Sheet")
@@ -444,6 +448,7 @@ Congratulations! This is everything you need for the booking form to work. You c
 - During the Valentine's Day, there should be at least one person per group in each time slot that is marking delivered valentines by painting them on their spreadsheets, letting joining group members know the group's location and direction so that they can find each other.
 - Try to give each group a distinct style so that members can see each other from a km away xD. Also gives listeners joy! You could think of all kinds of gimmicks.
 - Don't forget to send an email to the NU staff (both workers and professors, there should be a mass email somewhere) telling them about the Singing Valentines in advance, they love to order this type of stuff too!
+- Pro tip: if you are doing a separate art for the Singing Valentine's poster and the Valentine's Concert poster. Just print a double sided poster! Then whenever the slots get booked up, members can just flip the nearest poster and donezo, no more wasted real estate!
 
 <script>
     function generateSlots() {
