@@ -1,0 +1,67 @@
+/*#### Singing Valentines Booking Form ####
+*
+* Used on a multiple choice item in Google Forms, this can update the available slots
+* after each booking.
+*
+* Requires: A Google Sheet created through a Google Form.
+*
+*/
+
+//#### GLOBALS ####
+var FORM_ID = "";//Add your form ID (from the address bar)
+
+var SS_ID = ""; //Add your Spreadsheet ID (from the address bar)
+var SHEET_NAME = "Form Responses 1"; //Add your Sheet tab name
+var SESSION_DATA_RANGE = "A2:A1400"; //Add the range of booking items your selected sheet tab
+
+var FORM_CLOSE_MESSAGE = `Registration is now closed.
+
+Тіркеу аяқталды.
+
+Регистрация окончена.`;
+
+var NUM_OF_AVAILABLE_SLOTS = 1;
+
+// The message the form displays when thhe form is automatically closed
+// Could be used to promote the Valentines concert or social media
+
+
+/* ###################################################################
+* Seat booking function
+*
+* Requires: Set trigger Edit>Current project's triggers > select onSubmit
+*
+* After the form is submitted, it checks the information from the
+* slots and then updates the form with the remaining slots.
+* If a slot is chosen, that slot is removed.
+* If all slots are taken for all groups, the form is closed.
+*/
+
+function onFormSubmit() {
+  var form = FormApp.openById(FORM_ID);
+  var allTakenSlots = SpreadsheetApp
+                      .openById(SS_ID)
+                      .getSheetByName(SHEET_NAME)
+                      .getRange(SESSION_DATA_RANGE)
+                      .getValues()
+                      .filter(function(item){
+                        return item[0].toString().length > 0;
+                      });
+  if(NUM_OF_AVAILABLE_SLOTS - allTakenSlots.length <= 0){
+    // Close the form.
+    form.setAcceptingResponses(false);
+    form.setCustomClosedFormMessage(FORM_CLOSE_MESSAGE);
+  }
+};
+
+/* ###################################################################
+* Form opening function
+*
+* Requires: Set trigger Edit>Current project's triggers > select time-driven > specific date and time
+*
+* At the specified time it opens the form
+*/
+function openFormAtTime() {
+  var form = FormApp.openById(FORM_ID);
+  form.setAcceptingResponses(true);
+}
